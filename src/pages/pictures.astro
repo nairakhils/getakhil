@@ -1,0 +1,52 @@
+---
+import Card from "../components/Card/index.astro";
+import BasicLayout from "../layouts/BasicLayout.astro";
+---
+
+<script>
+  import { timeline, type TimelineDefinition } from "motion";
+
+  const sequence = [
+    [
+      ".loaderRef",
+      { opacity: [1, 0], pointerEvents: "none" },
+      { easing: "ease-out" },
+    ],
+  ];
+
+  timeline(sequence as TimelineDefinition);
+</script>
+
+<BasicLayout
+  title="Gianmarco Cavallo - Art Gallery"
+  description="A collection of 3D and 2D art pieces"
+  page="pictures"
+>
+  <a
+    href="/"
+    class="text-white absolute bg-neutral-900 hover:bg-neutral-800 top-4 left-4 px-4 py-2 border-1 border-solid border-neutral-600 rounded-lg"
+    >Back</a
+  >
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> <!-- Increased gap for better spacing -->
+    <Card colSpan="md:col-span-2" rowSpan="md:row-span-2"> <!-- Increased colSpan and rowSpan -->
+      <div class="flex flex-col items-center">
+        <img src="/images/art1.jpg" alt="Art 1" class="w-full h-auto" />
+        <p class="text-lg mt-4">Art Piece 1</p> <!-- Increased text size -->
+      </div>
+    </Card>
+    <Card colSpan="md:col-span-2" rowSpan="md:row-span-2"> <!-- Increased colSpan and rowSpan -->
+      <div class="flex flex-col items-center">
+        <img src="/images/art2.jpg" alt="Art 2" class="w-full h-auto" />
+        <p class="text-lg mt-4">Art Piece 2</p> <!-- Increased text size -->
+      </div>
+    </Card>
+    <Card colSpan="md:col-span-2" rowSpan="md:row-span-2"> <!-- Increased colSpan and rowSpan -->
+      <div class="flex flex-col items-center">
+        <img src="/images/art3.jpg" alt="Art 3" class="w-full h-auto" />
+        <p class="text-lg mt-4">Art Piece 3</p> <!-- Increased text size -->
+      </div>
+    </Card>
+    <!-- Add more cards as needed -->
+  </div>
+</BasicLayout>

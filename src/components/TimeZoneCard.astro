@@ -1,32 +1,29 @@
 ---
-import { getCurrentTimeInItaly, formatTimeForItaly } from "../lib/helpers";
+import { getCurrentTimeInEasternTime, formatTimeForEasternTime } from "../lib/helpers";
 import Card from "./Card/index.astro";
----
+import { onCleanup, onMount } from "solid-js";
 
-<script>
-  import { onCleanup, onMount } from "solid-js";
-  import { formatTimeForItaly } from "../lib/helpers";
+let interval: ReturnType<typeof setInterval>;
 
-  let interval: ReturnType<typeof setInterval>;
+function updateClock() {
+  const timeDisplay = document.getElementById("timeDisplay");
+  const now = getCurrentTimeInEasternTime();
 
-  function updateClock() {
-    const timeDisplay = document.getElementById("timeDisplay");
-    const now = new Date();
-
-    if (timeDisplay) {
-      timeDisplay.textContent = formatTimeForItaly(now);
-      timeDisplay.setAttribute("datetime", now.toISOString());
-    }
+  if (timeDisplay) {
+    timeDisplay.textContent = formatTimeForEasternTime(now);
+    timeDisplay.setAttribute("datetime", now.toISOString());
   }
+}
 
-  onMount(() => {
-    interval = setInterval(updateClock, 1000);
-  });
+onMount(() => {
+  interval = setInterval(updateClock, 1000);
+  updateClock(); // Initial call to set the time immediately
+});
 
-  onCleanup(() => {
-    clearInterval(interval);
-  });
-</script>
+onCleanup(() => {
+  clearInterval(interval);
+});
+---
 
 <Card colSpan="lg:col-span-2" rowSpan="md:row-span-2" title="Time zone">
   <time
@@ -34,6 +31,6 @@ import Card from "./Card/index.astro";
     id="timeDisplay"
     class="text-2xl xl:text-5xl xl:whitespace-nowrap w-50 xl:w-100 h-[calc(100%-28px)] font-serif flex justify-center items-center"
   >
-    {formatTimeForItaly(getCurrentTimeInItaly())}
+    {formatTimeForEasternTime(getCurrentTimeInEasternTime())}
   </time>
 </Card>

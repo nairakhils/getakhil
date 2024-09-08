@@ -18,34 +18,34 @@ interface Props {
 const { title, description, page, slug, frontmatter } = Astro.props;
 const image =
   page === "travel"
-    ? `${Astro.url.origin}/globe_preview.webp"`
-    : `${Astro.url.origin}/og-image.png`;
+    ? `${Astro.url.origin}/globe_preview.webp`
+    : `/me.png`;
 
 const schema =
   page !== "blog"
     ? {
         "@context": "http://schema.org",
         "@type": "Person",
-        name: "Gianmarco",
-        url: "https://gianmarco.xyz",
+        name: "Akhil",
+        url: "",
         sameAs: [
-          "https://www.linkedin.com/in/gianmarco-cavallo",
-          "https://github.com/Ladvace",
+          "https://www.linkedin.com/in/akhilnair16",
+          "https://github.com/nairakhils",
         ],
-        image: "https://gianmarco.xyz/og-image.png",
-        jobTitle: "Freelance Frontend Developer",
+        image: "/me.png",
+        jobTitle: "",
         worksFor: {
           "@type": "Organization",
           name: "Self-Employed",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Italy",
-            addressCountry: "IT",
+            addressLocality: "USA",
+            addressCountry: "US",
           },
         },
         nationality: {
           "@type": "Country",
-          name: "Italy",
+          name: "India",
         },
       }
     : {
@@ -53,26 +53,26 @@ const schema =
         "@type": "BlogPosting",
         mainEntityOfPage: {
           "@type": "WebPage",
-          "@id": `https://gianmarco.xyz/blog/${slug}`,
+          "@id": ``,
         },
         headline: frontmatter?.title || title,
         description: frontmatter?.description || title,
-        image: "https://gianmarco.xyz/og-image.png", //TODO: dynamic
+        image: "", //TODO: dynamic
         author: {
           "@type": "Person",
-          name: "Gianmarco",
-          url: "https://gianmarco.xyz",
+          name: "Akhil",
+          url: "",
           sameAs: [
-            "https://www.linkedin.com/in/gianmarco-cavallo",
-            "https://github.com/Ladvace",
+            "https://www.linkedin.com/in/akhilnair16",
+            "https://github.com/nairakhils",
           ],
         },
         publisher: {
           "@type": "Organization",
-          name: "Gianmarco",
+          name: "Akhil",
           logo: {
             "@type": "ImageObject",
-            url: "https://gianmarco.xyz/og-image.png",
+            url: "",
           },
         },
         datePublished: frontmatter?.pubDate || new Date().toISOString(),
@@ -85,7 +85,7 @@ const schema =
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/me.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -95,18 +95,6 @@ const schema =
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url.origin} />
-    <meta
-      property="og:image"
-      content={image || "https://gianmarco.xyz/og-image.png"}
-    />
-    <!-- Basic Twitter Card tags -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta
-      name="twitter:image"
-      content={image || "https://gianmarco.xyz/og-image.png"}
-    />
 
     <link rel="preconnect" href="https://cdn.fontshare.com" />
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
@@ -114,6 +102,9 @@ const schema =
   <body
     class="bg-darkslate-700 md:h-screen flex flex-col justify-center items-center"
   >
+    <div class="background-grid">
+      <div class="streak"></div>
+    </div>
     <slot name="loader" />
     <slot />
   </body>
@@ -137,25 +128,14 @@ const schema =
     font-weight: 100 1000;
   }
 
-  body {
-    margin: 0;
-    font-family: "Satoshi", sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
+body {
+  margin: 0;
+  font-family: "Satoshi", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: #000000; /* Black background */
+  background-image: url('bh_grav_lensing_1.png'); /* Path to your world map image */
+  background-size: cover; /* Scale the background image to cover the whole viewport */
+  background-repeat: no-repeat; /* Prevent repeating the background image */
+  background-position: center; /* Center the background image */
+}
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: "Cabinet Grotesk", sans-serif;
-  }
-  p {
-    font-family: "Satoshi";
-  }
-
-  b {
-    font-weight: 700 !important;
-  }
-</style>

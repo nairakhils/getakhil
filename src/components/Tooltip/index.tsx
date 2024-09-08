@@ -9,29 +9,30 @@ function Tooltip(props: Props) {
   const [clickCount, setClickCount] = createSignal(0);
 
   const messages = [
-    "Hi there!",
-    "Clicked again?",
-    "Still here?",
-    "Persistent, aren't you?",
-    "What's up?",
-    "Again? Really?",
-    "You're curious!",
-    "Not cool!",
-    "Give it a break!",
-    "That's annoying!",
-    "Hands off!",
-    "No more clicks!",
-    "Seriously?!",
-    "Ouch! That hurts!",
-    "You're persistent!",
-    "Why the curiosity?",
-    "I'm getting tired!",
-    "I'm bored!",
-    "Enough's enough!",
-    "Find another hobby!",
-    "Stop, please!",
-    "Okay, last one!",
-    "That's it, I'm done!",
+    "std::cout << \"Hello, World!\" << std::endl;", // C++
+    "import numpy as np", // Python
+    "import jax.numpy as jnp", // JAX
+    "std::vector<int> v = {1, 2, 3};", // C++
+    "def my_function():\n    pass", // Python
+    "x = jnp.array([1, 2, 3])", // JAX
+    "std::unique_ptr<MyClass> ptr = std::make_unique<MyClass>();", // C++
+    "class MyClass:\n    def __init__(self):\n        pass", // Python
+    "y = jnp.dot(x, x)", // JAX
+    "std::thread t([]{ do_something(); });", // C++
+    "with open('file.txt', 'r') as file:\n    content = file.read()", // Python
+    "z = jnp.add(x, y)", // JAX
+    "std::map<std::string, int> my_map;", // C++
+    "try:\n    x = 1 / 0\nexcept ZeroDivisionError:\n    pass", // Python
+    "grad_fn = jax.grad(my_function)", // JAX
+    "std::shared_ptr<MyClass> sp = std::make_shared<MyClass>();", // C++
+    "import matplotlib.pyplot as plt", // Python
+    "key = jax.random.PRNGKey(0)", // JAX
+    "std::mutex mtx;", // C++
+    "for i in range(10):\n    print(i)", // Python
+    "jax.jit(my_function)", // JAX
+    "std::condition_variable cv;", // C++
+    "import pandas as pd", // Python
+    "jax.vmap(my_function)", // JAX
   ];
 
   const currentMessage = () => {

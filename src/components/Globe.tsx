@@ -2,21 +2,17 @@ import { onMount } from "solid-js";
 import * as d3 from "d3";
 import worldData from "../lib/world.json";
 
+type CountryVisits = {
+  [key: string]: number;
+};
+
 const GlobeComponent = () => {
   let mapContainer: HTMLDivElement | undefined;
 
-  const visitedCountries = [
-    "France",
-    "China",
-    "Italy",
-    "Sri Lanka",
-    "Turkey",
-    "Greece",
-    "Malta",
-    "Hungary",
-    "Portugal",
-    "Marocco",
-  ];
+  const visitedCountries: CountryVisits = {
+    "India": 32,
+    "USA": 10,
+  };
 
   onMount(() => {
     if (!mapContainer) return;
@@ -61,17 +57,36 @@ const GlobeComponent = () => {
       .append("path")
       .attr("d", (d: any) => pathGenerator(d as any))
       .attr("fill", (d: { properties: { name: string } }) =>
-        visitedCountries.includes(d.properties.name) ? "#E63946" : "white"
+        visitedCountries.hasOwnProperty(d.properties.name) ? "#90EE90" : "white"
       )
       .style("stroke", "black")
       .style("stroke-width", 0.3)
       .style("opacity", 0.8);
+
+    // Add text labels for visited countries
+    map
+      .append("g")
+      .attr("class", "labels")
+      .selectAll("text")
+      .data(worldData.features)
+      .enter()
+      .filter((d: { properties: { name: string } }) =>
+        visitedCountries.hasOwnProperty(d.properties.name)
+      )
+      .append("text")
+      .attr("x", (d: any) => pathGenerator.centroid(d)[0])
+      .attr("y", (d: any) => pathGenerator.centroid(d)[1])
+      .attr("dy", "-0.5em")
+      .attr("text-anchor", "middle")
+      .attr("fill", "black")
+      .text((d: { properties: { name: string } }) => visitedCountries[d.properties.name]);
 
     d3.timer(() => {
       const rotate = projection.rotate();
       const k = sensitivity / projection.scale();
       projection.rotate([rotate[0] - 1 * k, rotate[1]]);
       svg.selectAll("path").attr("d", (d: any) => pathGenerator(d as any));
+      svg.selectAll("text").attr("x", (d: any) => pathGenerator.centroid(d)[0]).attr("y", (d: any) => pathGenerator.centroid(d)[1]);
     }, 200);
   });
 
@@ -82,4 +97,4 @@ const GlobeComponent = () => {
   );
 };
 
-export default GlobeComponent;
+export default GlobeComponent

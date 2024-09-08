@@ -38,22 +38,22 @@ export default defineConfig({
         200: "#262626",
         300: "#202020",
         400: "#1A1A1A",
-        500: "#171717" /* Exactly your example for the background */,
+        500: "#171717",
         600: "#141414",
         700: "#111111",
         800: "#0E0E0E",
-        900: "#0B0B0B" /* Deeper and darker */,
+        900: "#0B0B0B",
       },
       primary: {
-        100: "#F9CDD3",
-        200: "#F3A3AA",
-        300: "#EC7981",
-        400: "#E64F59",
-        500: "#E63946",
-        600: "#CF2F3D",
-        700: "#B82534",
-        800: "#A01B2B",
-        900: "#891321",
+        100: "#E0F7FA", // Light cyan
+        200: "#B2EBF2", // Lighter cyan
+        300: "#80DEEA", // Light cyan
+        400: "#4DD0E1", // Cyan
+        500: "#26C6DA", // Cyan
+        600: "#00BCD4", // Dark cyan
+        700: "#00ACC1", // Darker cyan
+        800: "#0097A7", // Very dark cyan
+        900: "#00838F", // Very dark cyan
       },
     },
   },

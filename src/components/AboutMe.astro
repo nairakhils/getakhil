@@ -2,32 +2,29 @@
 import Card from "./Card/index.astro";
 ---
 
-<Card colSpan="md:col-span-1" rowSpan="md:row-span-6" title="About me">
+<Card colSpan="md:col-span-1" rowSpan="md:row-span-6" title="Code / Work">
   <div class="flex flex-col gap-2">
     <div class="text-sm font-light">
       <p>
-        Hi, I'm Gianmarco, a front-end software developer from Italy.
-        <br />
-        My primary tools of choice includes:
+        Languages/Frameworks I've worked with:
       </p>
       <ul class="list-disc list-inside">
-        <li>JavaScript</li>
+        <li>Python</li>
+        <li>C++</li>
+        <li>Javascript</li>
         <li>React</li>
-        <li>Solidjs</li>
-        <li>Astro</li>
-        <li>svelte</li>
         <li>Nodejs</li>
+        <li>JAX</li>
       </ul>
     </div>
     <p class="text-sm font-light">
-      Beyond coding, I'm passionate about design, illustration, animation and 3D modelling and traveling.
-      An unusual hobby of mine is collecting vintage passports, they're
-      interesting pieces of history to me.
+     Projects that I've been working on lately:
+      <li>2D Hydrodynamics code</li>
+      <li><a href="https://github.com/nairakhils/swirl" target="_blank">1D Hydrodynamics code in JAX</a></li>
     </p>
     <p class="text-sm font-light">
-      While I have some preferred tools, I always choose the best one for the
-      job, even if it's not on my usual list. My goal is to find the right
-      solution for each project.
+      The 2D code is primarily written in C++ (as a part of the Clemson Computational Astrophysics Group).<br>
+      The 1D code is written in JAX, and it includes 5th order WENO reconstruction.<br>
     </p>
   </div>
 </Card>
