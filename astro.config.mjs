@@ -39,5 +39,9 @@ export default defineConfig({
     assetsInclude: "**/*.riv",
   },
 
-  adapter: vercel(),
+  adapter: vercel({
+    imagesConfig: {
+      sizes: [320, 640, 1280],
+    },
+  }),
 });
