@@ -1,12 +1,12 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
-import vercel from "@astrojs/vercel";  // Use Vercel adapter
+//import vercel from "@astrojs/vercel";  // Use Vercel adapter
 import robotsTxt from "astro-robots-txt";
 import UnoCSS from "@unocss/astro";
 import icon from "astro-icon";
 
 import solidJs from "@astrojs/solid-js";
-import { remarkReadingTime } from "./src/lib/remark-reading-time.mjs";
+import { remarkReadingTime } from "/src/lib/ remark-reading-time.mjs";
 
 import svelte from "@astrojs/svelte";
 
@@ -17,8 +17,6 @@ export default defineConfig({
     sitemap(),
     robotsTxt({
       sitemap: [
-        "https://getakhil.vercel.app/sitemap-index.xml",  // Update to Vercel URL
-        "https://getakhil.vercel.app/sitemap-0.xml",
       ],
     }),
     solidJs(),
@@ -30,7 +28,7 @@ export default defineConfig({
     remarkPlugins: [remarkReadingTime],
   },
   output: "server",  // Optional; use "static" if needed
-  adapter: vercel(),  // Use the Vercel adapter
+  //adapter: vercel(),  // Use the Vercel adapter
   vite: {
     assetsInclude: "**/*.riv",
   },
