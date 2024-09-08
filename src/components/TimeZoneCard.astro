@@ -1,36 +1,16 @@
 ---
-import { getCurrentTimeInEasternTime, formatTimeForEasternTime } from "../lib/helpers";
 import Card from "./Card/index.astro";
-import { onCleanup, onMount } from "solid-js";
-
-let interval: ReturnType<typeof setInterval>;
-
-function updateClock() {
-  const timeDisplay = document.getElementById("timeDisplay");
-  const now = getCurrentTimeInEasternTime();
-
-  if (timeDisplay) {
-    timeDisplay.textContent = formatTimeForEasternTime(now);
-    timeDisplay.setAttribute("datetime", now.toISOString());
-  }
-}
-
-onMount(() => {
-  interval = setInterval(updateClock, 1000);
-  updateClock(); // Initial call to set the time immediately
-});
-
-onCleanup(() => {
-  clearInterval(interval);
-});
 ---
 
-<Card colSpan="lg:col-span-2" rowSpan="md:row-span-2" title="Time zone">
-  <time
-    datetime=""
-    id="timeDisplay"
-    class="text-2xl xl:text-5xl xl:whitespace-nowrap w-50 xl:w-100 h-[calc(100%-28px)] font-serif flex justify-center items-center"
-  >
-    {formatTimeForEasternTime(getCurrentTimeInEasternTime())}
-  </time>
+<Card colSpan="lg:col-span-2" rowSpan="md:row-span-2" title="Quick Links">
+  <div class="flex flex-col space-y-4">
+    <div>
+      <h2 class="text-sm text-gray-500">Latest work:</h2>
+     <p><a href="https://github.com/nairakhils/swirl" target="_blank" title="Swirl1d" rel="noopener noreferrer">Swirl-v0.1 - JAX</a></p>
+    </div>
+    <div>
+      <h2 class="text-sm text-gray-500">Secondary:</h2>
+      <p><a href="https://github.com/nairakhils/QuasarMorphCNN" target="_blank" title="CNN" rel="noopener noreferrer">CNN models - QuasarMorph</a></p>
+    </div>
+  </div>
 </Card>
