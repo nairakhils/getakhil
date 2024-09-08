@@ -27,7 +27,7 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkReadingTime],
   },
-  output: "server",  // Optional; use "static" if needed
+  output: "static",  // Optional; use "static" if needed
   //adapter: vercel(),  // Use the Vercel adapter
   vite: {
     assetsInclude: "**/*.riv",
