@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --bg: #000;
+      --fg: #fff;
+      --dim: #555;
+      --faint: #222;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Space Grotesk', system-ui, sans-serif;
+      --rail-left: 48px;
+      --content-left: 88px
+    }
+
+    @media(min-width:768px) {
+      :root {
+        --rail-left: 80px;
+        --content-left: 140px
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased
+    }
+
+    #git-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      pointer-events: none;
+      z-index: 1
+    }
+
+    .content {
+      position: relative;
+      z-index: 2
+    }
+
+    section {
+      padding: clamp(3rem, 5vw, 5rem) 8vw clamp(3rem, 5vw, 5rem) var(--content-left);
+      position: relative;
+      max-width: 58vw
+    }
+
+    section.hero-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 0;
+      padding-bottom: 0;
+      position: relative;
+      overflow: hidden;
+      max-width: none
+    }
+
+    .hero-video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0.8;
+      pointer-events: none
+    }
+
+    .hero-section .content-inner {
+      position: relative;
+      z-index: 2;
+      margin-top: 10vh
+    }
+
+    .hero-pre {
+      font-family: var(--mono);
+      font-size: clamp(.65rem, 0.8vw, .85rem);
+      letter-spacing: .2em;
+      color: var(--dim);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeIn .8s ease forwards .2s
+    }
+
+    .hero-pre .branch {
+      color: #888
+    }
+
+    .hero-section h1 {
+      font-family: var(--mono);
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      letter-spacing: -.03em;
+      opacity: 0;
+      animation: fadeIn .8s ease forwards .35s
+    }
+
+    .hero-section h1 strong {
+      font-weight: 700
+    }
+
+    .hero-sub {
+      font-family: var(--mono);
+      font-size: clamp(.85rem, 1.1vw, 1.05rem);
+      font-weight: 300;
+      color: var(--dim);
+      max-width: 520px;
+      line-height: 1.8;
+      margin-top: 1.5rem;
+      opacity: 0;
+      animation: fadeIn .8s ease forwards .5s
+    }
+
+    .hero-sub em {
+      font-style: normal;
+      color: var(--fg)
+    }
+
+    .hero-nav {
+      margin-top: 3rem;
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      font-family: var(--mono);
+      font-size: clamp(.75rem, 0.85vw, .9rem);
+      letter-spacing: .04em;
+      opacity: 0;
+      animation: fadeIn .8s ease forwards .65s
+    }
+
+    .hero-nav a {
+      color: var(--dim);
+      text-decoration: none;
+      transition: color .3s
+    }
+
+    .hero-nav a:hover {
+      color: var(--fg)
+    }
+
+    .hero-nav .n {
+      color: var(--dim);
+      margin-right: .3rem;
+      font-size: clamp(.65rem, 0.7vw, .8rem)
+    }
+
+    .commit-header {
+      margin-bottom: 2.5rem
+    }
+
+    .commit-line {
+      font-family: var(--mono);
+      font-size: clamp(.65rem, 0.75vw, .8rem);
+      color: var(--dim);
+      letter-spacing: .03em;
+      line-height: 1.8
+    }
+
+    .commit-line .hash {
+      color: #666
+    }
+
+    .commit-line .btag {
+      color: #888;
+      border: 1px solid #333;
+      padding: .1em .4em;
+      border-radius: 2px;
+      font-size: clamp(.6rem, 0.65vw, .72rem);
+      margin-left: .3rem
+    }
+
+    .commit-line .msg {
+      color: var(--fg);
+      font-weight: 500
+    }
+
+    .commit-meta {
+      font-family: var(--mono);
+      font-size: clamp(.6rem, 0.65vw, .72rem);
+      color: #444;
+      margin-top: .15rem
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0;
+      max-width: 620px
+    }
+
+    .ak {
+      font-family: var(--mono);
+      font-size: clamp(.78rem, 0.9vw, .95rem);
+      color: var(--dim);
+      padding: .9rem 2rem .9rem 0;
+      border-bottom: 1px solid var(--faint);
+      white-space: nowrap
+    }
+
+    .av {
+      font-family: var(--mono);
+      font-size: clamp(.88rem, 1vw, 1.05rem);
+      padding: .9rem 0;
+      border-bottom: 1px solid var(--faint)
+    }
+
+    .research-note {
+      font-family: var(--mono);
+      font-size: clamp(.88rem, 1vw, 1.05rem);
+      color: var(--dim);
+      line-height: 1.8;
+      max-width: 540px;
+      margin-bottom: 2rem
+    }
+
+    .research-note em {
+      font-style: normal;
+      color: var(--fg)
+    }
+
+    .paper-list {
+      max-width: 640px
+    }
+
+    .paper {
+      padding: 1.4rem 0;
+      border-bottom: 1px solid var(--faint);
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: padding-left .3s
+    }
+
+    .paper:first-child {
+      border-top: 1px solid var(--faint)
+    }
+
+    .paper:hover {
+      padding-left: .8rem
+    }
+
+    .paper:hover .paper-title {
+      color: var(--fg)
+    }
+
+    .paper-year {
+      font-family: var(--mono);
+      font-size: clamp(.62rem, 0.7vw, .75rem);
+      color: var(--dim);
+      letter-spacing: .08em;
+      margin-bottom: .35rem
+    }
+
+    .paper-title {
+      font-family: var(--mono);
+      font-size: clamp(.92rem, 1.05vw, 1.1rem);
+      font-weight: 500;
+      color: #aaa;
+      transition: color .3s;
+      margin-bottom: .3rem
+    }
+
+    .paper-authors {
+      font-family: var(--mono);
+      font-size: clamp(.68rem, 0.75vw, .8rem);
+      color: #444
+    }
+
+    .gpu-note {
+      font-family: var(--mono);
+      font-size: clamp(.88rem, 1vw, 1.05rem);
+      color: var(--dim);
+      line-height: 1.8;
+      max-width: 520px;
+      margin-bottom: 2rem
+    }
+
+    .gpu-note em {
+      font-style: normal;
+      color: var(--fg)
+    }
+
+    #gpu-canvas {
+      width: 100%;
+      max-width: 640px;
+      height: clamp(240px, 22vw, 320px);
+      display: block
+    }
+
+    .gpu-projects {
+      margin-top: 2rem;
+      max-width: 640px
+    }
+
+    .gp {
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--faint);
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: padding-left .3s
+    }
+
+    .gp:first-child {
+      border-top: 1px solid var(--faint)
+    }
+
+    .gp:hover {
+      padding-left: .8rem
+    }
+
+    .gp:hover .gp-name {
+      color: var(--fg)
+    }
+
+    .gp-tag {
+      font-family: var(--mono);
+      font-size: clamp(.58rem, 0.6vw, .68rem);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: .25rem
+    }
+
+    .gp-name {
+      font-family: var(--mono);
+      font-size: clamp(.92rem, 1.05vw, 1.1rem);
+      font-weight: 500;
+      color: #aaa;
+      transition: color .3s;
+      margin-bottom: .25rem
+    }
+
+    .gp-desc {
+      font-family: var(--mono);
+      font-size: clamp(.72rem, 0.8vw, .85rem);
+      color: var(--dim);
+      line-height: 1.6
+    }
+
+    .git-log {
+      max-width: 640px;
+      font-family: var(--mono)
+    }
+
+    .log-entry {
+      padding: 1.4rem 0;
+      border-bottom: 1px solid var(--faint)
+    }
+
+    .log-entry:first-child {
+      border-top: 1px solid var(--faint)
+    }
+
+    .log-hash {
+      font-size: clamp(.65rem, 0.72vw, .78rem);
+      color: #444
+    }
+
+    .log-date {
+      font-size: clamp(.62rem, 0.68vw, .72rem);
+      color: #444;
+      margin-top: .1rem
+    }
+
+    .log-msg {
+      font-size: clamp(.92rem, 1.05vw, 1.1rem);
+      font-weight: 500;
+      margin-top: .45rem
+    }
+
+    .log-body {
+      font-size: clamp(.72rem, 0.8vw, .85rem);
+      color: var(--dim);
+      margin-top: .25rem;
+      line-height: 1.6
+    }
+
+    .contact-section {
+      padding-bottom: 3rem
+    }
+
+    .term-links {
+      font-family: var(--mono);
+      font-size: clamp(.82rem, 0.9vw, .95rem);
+      display: flex;
+      flex-direction: column;
+      gap: .5rem
+    }
+
+    .term-links a {
+      color: var(--dim);
+      text-decoration: none;
+      transition: color .3s
+    }
+
+    .term-links a:hover {
+      color: var(--fg)
+    }
+
+    .term-links .p {
+      color: #333;
+      user-select: none
+    }
+
+    .footer-end {
+      margin-top: 3rem;
+      font-family: var(--mono);
+      font-size: clamp(.55rem, 0.6vw, .65rem);
+      color: #1a1a1a
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .7s ease, transform .7s ease
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* Right Panel */
+    .side-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 42vw;
+      height: 100vh;
+      z-index: 3;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem clamp(1.5rem, 3vw, 3rem)
+    }
+
+    .side-panel .panel {
+      position: absolute;
+      opacity: 0;
+      transition: opacity .5s ease, transform .5s ease;
+      transform: translateY(12px);
+      pointer-events: none;
+      width: 85%;
+      max-width: clamp(320px, 30vw, 480px)
+    }
+
+    .side-panel .panel.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto
+    }
+
+    .term-box {
+      border: 1px solid var(--faint);
+      border-radius: 4px;
+      overflow: hidden;
+      font-family: var(--mono);
+      font-size: clamp(.7rem, 0.8vw, .85rem)
+    }
+
+    .term-bar {
+      background: #0a0a0a;
+      padding: .5rem .8rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      border-bottom: 1px solid var(--faint)
+    }
+
+    .term-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      border: 1px solid #333
+    }
+
+    .term-title {
+      color: #444;
+      font-size: clamp(.55rem, 0.6vw, .65rem);
+      margin-left: .5rem;
+      letter-spacing: .1em
+    }
+
+    .term-body {
+      background: #050505;
+      padding: 1rem;
+      min-height: clamp(200px, 20vw, 280px);
+      max-height: clamp(260px, 26vw, 360px);
+      overflow-y: auto;
+      line-height: 1.8
+    }
+
+    .term-body .line {
+      color: var(--dim)
+    }
+
+    .term-body .line .prompt {
+      color: #444
+    }
+
+    .term-body .line .cmd {
+      color: #999
+    }
+
+    .term-body .line .out {
+      color: #555
+    }
+
+    .term-input-wrap {
+      display: flex;
+      align-items: center;
+      color: #444;
+      margin-top: .3rem
+    }
+
+    .term-input-wrap .prompt {
+      margin-right: .4rem
+    }
+
+    #term-input {
+      background: none;
+      border: none;
+      color: #999;
+      font-family: var(--mono);
+      font-size: clamp(.7rem, 0.8vw, .85rem);
+      outline: none;
+      width: 100%;
+      caret-color: var(--fg)
+    }
+
+    .cite-panel {
+      font-family: var(--mono)
+    }
+
+    .cite-header {
+      font-size: clamp(.6rem, 0.65vw, .72rem);
+      color: #444;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem
+    }
+
+    .cite-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(1rem, 1.5vw, 2rem)
+    }
+
+    .cite-stat .num {
+      font-size: clamp(1.5rem, 2.2vw, 2.4rem);
+      font-weight: 300;
+      color: var(--fg);
+      line-height: 1
+    }
+
+    .cite-stat .label {
+      font-size: clamp(.55rem, 0.6vw, .68rem);
+      color: var(--dim);
+      margin-top: .3rem;
+      letter-spacing: .05em
+    }
+
+    .cite-graph {
+      margin-top: 2rem;
+      border-top: 1px solid var(--faint);
+      padding-top: 1.2rem
+    }
+
+    .cite-graph-label {
+      font-size: clamp(.55rem, 0.6vw, .68rem);
+      color: #444;
+      letter-spacing: .1em;
+      margin-bottom: .8rem
+    }
+
+    .cite-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: clamp(2px, 0.3vw, 4px);
+      height: clamp(50px, 5vw, 70px)
+    }
+
+    .cite-bar {
+      flex: 1;
+      background: var(--faint);
+      border-radius: 1px;
+      min-height: 2px
+    }
+
+    .cite-year-labels {
+      display: flex;
+      gap: clamp(2px, 0.3vw, 4px);
+      margin-top: .3rem
+    }
+
+    .cite-year-labels span {
+      flex: 1;
+      font-size: clamp(.4rem, 0.45vw, .5rem);
+      color: #333;
+      text-align: center
+    }
+
+    .code-panel {
+      font-family: var(--mono)
+    }
+
+    .code-header {
+      font-size: clamp(.6rem, 0.65vw, .72rem);
+      color: #444;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 1rem
+    }
+
+    .code-block {
+      background: #050505;
+      border: 1px solid var(--faint);
+      border-radius: 4px;
+      padding: clamp(.8rem, 1vw, 1.2rem);
+      font-size: clamp(.62rem, 0.72vw, .78rem);
+      line-height: 1.9;
+      overflow-x: auto
+    }
+
+    .code-block .kw {
+      color: #888
+    }
+
+    .code-block .fn {
+      color: #aaa
+    }
+
+    .code-block .cm {
+      color: #333
+    }
+
+    .code-block .st {
+      color: #666
+    }
+
+    .code-block .num {
+      color: #777
+    }
+
+    .code-block .op {
+      color: #555
+    }
+
+    .code-file {
+      font-size: clamp(.5rem, 0.55vw, .6rem);
+      color: #333;
+      margin-bottom: .6rem;
+      letter-spacing: .1em
+    }
+
+    .metrics-panel {
+      font-family: var(--mono)
+    }
+
+    .metrics-header {
+      font-size: clamp(.6rem, 0.65vw, .72rem);
+      color: #444;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem
+    }
+
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: clamp(.6rem, 0.7vw, .8rem) 0;
+      border-bottom: 1px solid var(--faint)
+    }
+
+    .metric-row:first-of-type {
+      border-top: 1px solid var(--faint)
+    }
+
+    .metric-key {
+      font-size: clamp(.7rem, 0.78vw, .85rem);
+      color: var(--dim)
+    }
+
+    .metric-val {
+      font-size: clamp(.9rem, 1vw, 1.1rem);
+      color: var(--fg)
+    }
+
+    .metric-bar-wrap {
+      margin-top: 1.5rem
+    }
+
+    .metric-bar-label {
+      font-size: clamp(.58rem, 0.65vw, .72rem);
+      color: #444;
+      margin-bottom: .4rem;
+      display: flex;
+      justify-content: space-between
+    }
+
+    .metric-bar {
+      height: 3px;
+      background: var(--faint);
+      border-radius: 2px;
+      margin-bottom: 1rem;
+      overflow: hidden
+    }
+
+    .metric-bar-fill {
+      height: 100%;
+      background: #333;
+      border-radius: 2px;
+      transition: width 1s ease
+    }
+
+    .status-panel {
+      font-family: var(--mono)
+    }
+
+    .status-header {
+      font-size: clamp(.6rem, 0.65vw, .72rem);
+      color: #444;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      padding: clamp(.5rem, 0.6vw, .7rem) 0;
+      border-bottom: 1px solid var(--faint)
+    }
+
+    .status-item:first-of-type {
+      border-top: 1px solid var(--faint)
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0
+    }
+
+    .status-dot.on {
+      background: #4a4a4a;
+      box-shadow: 0 0 6px rgba(255, 255, 255, 0.1)
+    }
+
+    .status-dot.off {
+      background: #222
+    }
+
+    .status-text {
+      font-size: clamp(.7rem, 0.78vw, .85rem);
+      color: var(--dim)
+    }
+
+    .status-text a {
+      color: #888;
+      text-decoration: none;
+      border-bottom: 1px solid #222;
+      transition: all .3s
+    }
+
+    .status-text a:hover {
+      color: var(--fg);
+      border-color: #444
+    }
+
+    .status-response {
+      margin-top: 1.5rem;
+      font-size: clamp(.65rem, 0.72vw, .78rem);
+      color: #333;
+      line-height: 1.6
+    }
+
+    /* Easter Eggs — mermaid-style diagrams in the gap */
+    .egg {
+      position: absolute;
+      left: 95%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 1.2s ease .4s
+    }
+
+    .egg svg {
+      display: block;
+      transition: opacity .4s ease
+    }
+
+    .egg text {
+      font-family: var(--mono);
+      fill: rgba(255, 255, 255, 0.10);
+      font-size: 9px;
+      transition: fill .4s ease
+    }
+
+    .egg line,
+    .egg polyline,
+    .egg path {
+      stroke: rgba(255, 255, 255, 0.08);
+      fill: none;
+      stroke-width: 0.8;
+      transition: stroke .4s ease
+    }
+
+    .egg rect {
+      stroke: rgba(255, 255, 255, 0.10);
+      fill: none;
+      stroke-width: 0.7;
+      rx: 2;
+      transition: stroke .4s ease, fill .4s ease
+    }
+
+    .egg circle {
+      stroke: rgba(255, 255, 255, 0.10);
+      fill: none;
+      stroke-width: 0.7;
+      transition: stroke .4s ease
+    }
+
+    .egg .node-fill {
+      fill: rgba(255, 255, 255, 0.01);
+      transition: fill .4s ease
+    }
+
+    .egg .diamond {
+      stroke: rgba(255, 255, 255, 0.10);
+      fill: rgba(255, 255, 255, 0.01);
+      stroke-width: 0.7;
+      transition: stroke .4s ease, fill .4s ease
+    }
+
+    .egg .arrow {
+      marker-end: url(#arrowhead)
+    }
+
+    .fade-in.visible .egg {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    .egg:hover text {
+      fill: rgba(255, 255, 255, 0.65)
+    }
+
+    .egg:hover line,
+    .egg:hover polyline,
+    .egg:hover path {
+      stroke: rgba(255, 255, 255, 0.5)
+    }
+
+    .egg:hover rect {
+      stroke: rgba(255, 255, 255, 0.55)
+    }
+
+    .egg:hover circle {
+      stroke: rgba(255, 255, 255, 0.55)
+    }
+
+    .egg:hover .node-fill {
+      fill: rgba(255, 255, 255, 0.08)
+    }
+
+    .egg:hover .diamond {
+      stroke: rgba(255, 255, 255, 0.55);
+      fill: rgba(255, 255, 255, 0.06)
+    }
+
+    .fade-in.visible .egg {
+      opacity: 1
+    }
+
+    @media(max-width:1200px) {
+      .egg {
+        display: none
+      }
+    }
+
+    @media(max-width:900px) {
+      .side-panel {
+        display: none
+      }
+
+      .egg {
+        display: none
+      }
+
+      section {
+        max-width: none;
+        padding-right: 6vw
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr
+      }
+
+      .ak {
+        border-bottom: none;
+        padding-bottom: .2rem
+      }
+
+      .av {
+        padding-top: 0
+      }
+    }
+
+    @media(max-width:640px) {
+      section {
+        padding-left: 60px;
+        padding-right: 5vw
+      }
+
+      :root {
+        --rail-left: 32px;
+        --content-left: 60px
+      }
+
+      .hero-section .content-inner {
+        margin-top: 6vh
+      }
+
+      .hero-nav {
+        gap: 1.5rem
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="git-canvas"></canvas>
+  <svg style="position:absolute;width:0;height:0">
+    <defs>
+      <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+        <path d="M0,0 L6,2 L0,4" fill="rgba(255,255,255,0.18)" />
+      </marker>
+    </defs>
+  </svg>
+  <div class="side-panel">
+    <div class="panel" id="panel-about">
+      <div class="term-box">
+        <div class="term-bar">
+          <div class="term-dot"></div>
+          <div class="term-dot"></div>
+          <div class="term-dot"></div><span class="term-title">~/portfolio</span>
+        </div>
+        <div class="term-body" id="term-body">
+          <div class="line"><span class="prompt">$</span> <span class="cmd">cat welcome.txt</span></div>
+          <div class="line"><span class="out">type a command below. try: help</span></div>
+        </div>
+        <div style="background:#050505;padding:0 1rem .8rem;font-family:var(--mono);font-size:.7rem">
+          <div class="term-input-wrap"><span class="prompt">$</span><input type="text" id="term-input"
+              spellcheck="false" autocomplete="off"></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel" id="panel-research">
+      <div class="cite-panel">
+        <div class="cite-header">github stats</div>
+        <div class="cite-grid">
+          <div class="cite-stat">
+            <div class="num" id="gh-repos">-</div>
+            <div class="label">public repos</div>
+          </div>
+          <div class="cite-stat">
+            <div class="num" id="gh-stars">-</div>
+            <div class="label">total stars</div>
+          </div>
+          <div class="cite-stat">
+            <div class="num" id="gh-followers">-</div>
+            <div class="label">followers</div>
+          </div>
+          <div class="cite-stat">
+            <div class="num" id="gh-following">-</div>
+            <div class="label">following</div>
+          </div>
+        </div>
+        <div class="cite-graph">
+          <div class="cite-graph-label">contributions</div>
+          <canvas id="gh-graph" style="width:100%;height:clamp(80px,8vw,110px);display:block"></canvas>
+          <div id="gh-graph-meta"
+            style="display:flex;justify-content:space-between;margin-top:.5rem;font-family:var(--mono);font-size:clamp(.4rem,0.45vw,.5rem);color:#333">
+            <span id="gh-total-commits"></span>
+            <span>past year</span>
+          </div>
+        </div>
+        <div style="margin-top:1.2rem;font-family:var(--mono);font-size:clamp(.5rem,0.55vw,.6rem);color:#333">
+          <a href="https://github.com/nairakhils" target="_blank"
+            style="color:#555;text-decoration:none;border-bottom:1px solid #222;transition:all .3s">github.com/nairakhils
+            ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="panel" id="panel-gpu">
+      <div class="code-panel">
+        <div class="code-header">featured kernel</div>
+        <div class="code-file">swirl — weno5_reconstruct.cu</div>
+        <div class="code-block"><span class="kw">extern</span> <span class="st">"C"</span> <span
+            class="kw">__global__</span> <span class="kw">void</span> <span class="fn">weno5_lf_flux</span>(
+          <span class="kw">const double</span>* <span class="op">__restrict__</span> cons,
+          <span class="kw">double</span>* <span class="op">__restrict__</span> flux,
+          <span class="kw">double</span> alpha, <span class="kw">int</span> N) {
+          <span class="kw">__shared__ double</span> s[<span class="num">256</span> <span class="op">+</span> <span
+            class="num">2</span> <span class="op">*</span> <span class="num">5</span>];
+          <span class="kw">int</span> tid <span class="op">=</span> threadIdx.x;
+          <span class="kw">int</span> i <span class="op">=</span> blockIdx.x <span class="op">*</span> blockDim.x <span
+            class="op">+</span> tid;
+
+          <span class="cm">// load tile + 5-cell halo</span>
+          s[tid <span class="op">+</span> <span class="num">5</span>] <span class="op">=</span> cons[<span
+            class="fn">min</span>(i, N<span class="op">-</span><span class="num">1</span>)];
+          <span class="kw">if</span> (tid <span class="op">&lt;</span> <span class="num">5</span>) {
+          s[tid] <span class="op">=</span> cons[<span class="fn">max</span>(i<span class="op">-</span><span
+            class="num">5</span>, <span class="num">0</span>)];
+          s[tid<span class="op">+</span><span class="num">261</span>] <span class="op">=</span> cons[<span
+            class="fn">min</span>(i<span class="op">+</span><span class="num">256</span>, N<span
+            class="op">-</span><span class="num">1</span>)];
+          }
+          <span class="fn">__syncthreads</span>();
+
+          <span class="cm">// WENO5-JS smoothness indicators</span>
+          <span class="kw">double</span> b0, b1, b2, w0, w1, w2;
+          <span class="fn">weno5_weights</span>(s <span class="op">+</span> tid, <span class="op">&amp;</span>b0, <span
+            class="op">&amp;</span>b1, <span class="op">&amp;</span>b2);
+
+          <span class="cm">// Lax-Friedrichs split + reconstruct</span>
+          flux[i] <span class="op">=</span> <span class="fn">lf_split</span>(w0, w1, w2, alpha);
+          }
+        </div>
+        <div style="margin-top:1rem;font-family:var(--mono);font-size:.5rem;color:#333;display:flex;gap:1.5rem">
+          <span>&#9654; 256 threads/block</span><span>&#9654; 5-cell halo</span><span>&#9654; WENO5-JS/Z</span>
+        </div>
+      </div>
+    </div>
+    <div class="panel" id="panel-log">
+      <div class="metrics-panel">
+        <div class="metrics-header">career stats</div>
+        <div class="metric-row"><span class="metric-key">years in research</span><span class="metric-val">7+</span>
+        </div>
+        <div class="metric-row"><span class="metric-key">simulations run</span><span class="metric-val">enough to worry
+            IT</span>
+        </div>
+        <div class="metric-row"><span class="metric-key">GPU hours consumed</span><span class="metric-val">more than my
+            sleep hours</span>
+        </div>
+        <div class="metric-bar-wrap">
+          <div class="metric-bar-label"><span>Python</span><span>92%</span></div>
+          <div class="metric-bar">
+            <div class="metric-bar-fill" data-width="92"></div>
+          </div>
+          <div class="metric-bar-label"><span>C++ / CUDA</span><span>85%</span></div>
+          <div class="metric-bar">
+            <div class="metric-bar-fill" data-width="85"></div>
+          </div>
+          <div class="metric-bar-label"><span>JAX</span><span>60%</span></div>
+          <div class="metric-bar">
+            <div class="metric-bar-fill" data-width="60"></div>
+          </div>
+          <div class="metric-bar-label"><span>MPI / HPC</span><span>78%</span></div>
+          <div class="metric-bar">
+            <div class="metric-bar-fill" data-width="78"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel" id="panel-contact">
+      <div class="status-panel">
+        <div class="status-header">availability</div>
+        <div class="status-item">
+          <div class="status-dot on"></div>
+          <div class="status-text">Open to <a href="mailto:akhiln@clemson.edu">research collaborations</a></div>
+        </div>
+        <div class="status-item">
+          <div class="status-dot on"></div>
+          <div class="status-text">Accepting <a href="mailto:akhiln@clemson.edu">seminar invitations</a></div>
+        </div>
+        <div class="status-item">
+          <div class="status-dot on"></div>
+          <div class="status-text">Looking for <a href="mailto:akhiln@clemson.edu">postdoc positions</a></div>
+        </div>
+        <div class="status-item">
+          <div class="status-dot off"></div>
+          <div class="status-text">Industry consulting (unavailable)</div>
+        </div>
+        <div class="status-response">typical response time: <span style="color:#666">&lt; 48 hours</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <section class="hero-section" id="top" data-commit>
+      <video class="hero-video" autoplay muted loop playsinline>
+        <source src="bh.mp4" type="video/mp4">
+      </video>
+      <div class="content-inner">
+        <div class="hero-pre"><span class="branch">* main</span> &nbsp; HEAD</div>
+        <h1><strong>Akhil Nair</strong></h1>
+        <p class="hero-sub">Crashing <em>black holes</em> into each other on <em>GPUs</em> and calling it science.
+          Computational astrophysicist, <em>binary systems</em>, and HPC enthusiast.</p>
+        <nav class="hero-nav">
+          <a href="#about"><span class="n">01</span>about</a>
+          <a href="#research"><span class="n">02</span>research</a>
+          <a href="#gpu"><span class="n">03</span>computing</a>
+          <a href="#log"><span class="n">04</span>log</a>
+          <a href="#contact"><span class="n">05</span>contact</a>
+        </nav>
+      </div>
+    </section>
+    <section id="about" data-commit>
+      <div class="fade-in">
+        <div class="commit-header">
+          <div class="commit-line"><span class="hash">a3f7c2d</span><span class="btag">main</span> <span class="msg"> --
+              about.md</span></div>
+          <div class="commit-meta">Author: akhil -- now</div>
+        </div>
+        <div class="about-grid">
+          <div class="ak">role:</div>
+          <div class="av">PhD Student, Computational Astrophysics Lab</div>
+          <div class="ak">focus:</div>
+          <div class="av">Binary Black Hole Systems</div>
+          <div class="ak">methods:</div>
+          <div class="av">Hydrodynamics, Semi-analytical, Theoretical</div>
+          <div class="ak">stack:</div>
+          <div class="av">C++, CUDA, JAX/Python, JS</div>
+          <div class="ak">compute:</div>
+          <div class="av">Multi-GPU, HPC Clusters, Metal</div>
+          <div class="ak">location:</div>
+          <div class="av">somewhere, Earth</div>
+        </div>
+        <div class="egg"><svg width="180" height="270" viewBox="0 0 180 270">
+            <rect x="50" y="5" width="80" height="22" class="node-fill" />
+            <rect x="50" y="5" width="80" height="22" /><text x="90" y="20" text-anchor="middle">init</text>
+            <line x1="90" y1="27" x2="90" y2="50" class="arrow" />
+            <rect x="30" y="50" width="120" height="22" class="node-fill" />
+            <rect x="30" y="50" width="120" height="22" /><text x="90" y="65" text-anchor="middle">BSc Ruia</text>
+            <line x1="90" y1="72" x2="90" y2="97" class="arrow" />
+            <polygon points="90,97 132,118 90,139 48,118" class="diamond" /><text x="90" y="122"
+              text-anchor="middle">research?</text>
+            <line x1="132" y1="118" x2="160" y2="118" /><text x="164" y="122" font-size="7">industry</text>
+            <line x1="90" y1="139" x2="90" y2="162" class="arrow" /><text x="76" y="154" font-size="7">yes</text>
+            <rect x="25" y="162" width="130" height="22" class="node-fill" />
+            <rect x="25" y="162" width="130" height="22" /><text x="90" y="177" text-anchor="middle">MSc Mumbai</text>
+            <line x1="90" y1="184" x2="90" y2="207" class="arrow" />
+            <rect x="20" y="207" width="140" height="22" class="node-fill" />
+            <rect x="20" y="207" width="140" height="22" /><text x="90" y="222" text-anchor="middle">PhD Clemson
+              [HEAD]</text>
+            <line x1="90" y1="229" x2="90" y2="252" class="arrow" />
+            <circle cx="90" cy="258" r="5" />
+          </svg></div>
+      </div>
+    </section>
+    <section id="research" data-commit>
+      <div class="fade-in">
+        <div class="commit-header">
+          <div class="commit-line"><span class="hash">e91b04a</span><span class="btag">research</span> <span
+              class="msg"> -- add publications</span></div>
+          <div class="commit-meta">Author: akhil -- 2022</div>
+        </div>
+        <p class="research-note">Studying <em>binary black hole systems</em> through hydrodynamic simulations,
+          <em>semi-analytical models</em>, and theoretical frameworks. Building GPU-accelerated tools for computational
+          astrophysics.
+        </p>
+        <div class="paper-list">
+          <a class="paper" href="https://scixplorer.org/abs/2022MNRAS.511.4946N/abstract" target="_blank">
+            <div class="paper-year">2022 -- MNRAS, Vol. 511, Issue 4</div>
+            <div class="paper-title">Fraction of Broad Absorption Line Quasars in Different Radio Morphologies</div>
+            <div class="paper-authors">Nair, A.; Vivek, M.</div>
+          </a>
+          <a class="paper" href="#" style="opacity:0.35;pointer-events:none">
+            <div class="paper-year">TBD -- placeholder</div>
+            <div class="paper-title">[upcoming] — binary black hole accretion dynamics</div>
+            <div class="paper-authors">placeholder for future publication</div>
+          </a>
+          <a class="paper" href="#" style="opacity:0.35;pointer-events:none">
+            <div class="paper-year">TBD -- placeholder</div>
+            <div class="paper-title">[upcoming] — GPU-accelerated hydrodynamics methods</div>
+            <div class="paper-authors">placeholder for future publication</div>
+          </a>
+          <a class="paper" href="#" style="opacity:0.35;pointer-events:none">
+            <div class="paper-year">TBD -- placeholder</div>
+            <div class="paper-title">[upcoming] — circumbinary disk simulations</div>
+            <div class="paper-authors">placeholder for future publication</div>
+          </a>
+        </div>
+        <div class="egg"><svg width="200" height="240" viewBox="0 0 200 240">
+            <rect x="45" y="5" width="110" height="22" class="node-fill" />
+            <rect x="45" y="5" width="110" height="22" /><text x="100" y="20" text-anchor="middle">SDSS + FIRST</text>
+            <line x1="100" y1="27" x2="100" y2="48" class="arrow" />
+            <rect x="30" y="48" width="140" height="22" class="node-fill" />
+            <rect x="30" y="48" width="140" height="22" /><text x="100" y="63" text-anchor="middle">radio cutouts</text>
+            <line x1="100" y1="70" x2="100" y2="91" class="arrow" />
+            <rect x="50" y="91" width="100" height="22" class="node-fill" />
+            <rect x="50" y="91" width="100" height="22" /><text x="100" y="106" text-anchor="middle">CNN model</text>
+            <line x1="60" y1="113" x2="40" y2="134" class="arrow" />
+            <line x1="140" y1="113" x2="160" y2="134" class="arrow" />
+            <rect x="5" y="134" width="70" height="22" class="node-fill" />
+            <rect x="5" y="134" width="70" height="22" /><text x="40" y="149" text-anchor="middle">core-dom</text>
+            <rect x="125" y="134" width="70" height="22" class="node-fill" />
+            <rect x="125" y="134" width="70" height="22" /><text x="160" y="149" text-anchor="middle">lobe-dom</text>
+            <line x1="40" y1="156" x2="100" y2="177" class="arrow" />
+            <line x1="160" y1="156" x2="100" y2="177" class="arrow" />
+            <rect x="30" y="177" width="140" height="22" class="node-fill" />
+            <rect x="30" y="177" width="140" height="22" /><text x="100" y="192" text-anchor="middle">BAL
+              fraction</text>
+            <line x1="100" y1="199" x2="100" y2="215" class="arrow" />
+            <polygon points="100,215 135,230 65,230" class="diamond" /><text x="100" y="228" text-anchor="middle"
+              font-size="7">orientation?</text>
+          </svg></div>
+      </div>
+    </section>
+    <section id="gpu" data-commit>
+      <div class="fade-in">
+        <div class="commit-header">
+          <div class="commit-line"><span class="hash">4d8f1e3</span><span class="btag">feat/compute</span> <span
+              class="msg"> -- computing tools and infrastructure</span></div>
+          <div class="commit-meta">Author: akhil -- ongoing</div>
+        </div>
+        <p class="gpu-note">Writing solvers that run on <em>GPUs</em> — fused <em>CUDA kernels</em>, JAX/XLA backends,
+          shared-memory tiling, and whatever else makes the fluid move faster.</p>
+        <canvas id="gpu-canvas"></canvas>
+        <div class="gpu-projects">
+          <a class="gp" href="#">
+            <div class="gp-tag">CUDA / C++</div>
+            <div class="gp-name">nest</div>
+            <div class="gp-desc">GPU/CUDA project — in the works. Details coming soon.</div>
+          </a>
+          <a class="gp" href="https://github.com/nairakhils/swirl" target="_blank">
+            <div class="gp-tag">JAX + CuPy/CUDA</div>
+            <div class="gp-name">swirl</div>
+            <div class="gp-desc">1D compressible Euler solver. WENO5-JS/Z reconstruction, Lax-Friedrichs splitting,
+              fused RawKernels with shared-memory tiling.</div>
+          </a>
+          <a class="gp" href="https://github.com/clemson-cal/sailfish" target="_blank">
+            <div class="gp-tag">Rust / GPU</div>
+            <div class="gp-name">sailfish v0.8</div>
+            <div class="gp-desc">GPU-accelerated astrophysical gasdynamics code from Clemson CAL. Used for binary black
+              hole accretion simulations on Palmetto cluster.</div>
+          </a>
+          <a class="gp" href="https://github.com/nairakhils/gw_cbc" target="_blank">
+            <div class="gp-tag">Python / Streamlit</div>
+            <div class="gp-name">gw_cbc</div>
+            <div class="gp-desc">Interactive gravitational waveform analysis webapp using PyCBC. Live at
+              gwpycbc.streamlit.app.</div>
+          </a>
+        </div>
+        <div class="egg"><svg width="180" height="280" viewBox="0 0 180 280">
+            <rect x="30" y="5" width="120" height="22" class="node-fill" />
+            <rect x="30" y="5" width="120" height="22" /><text x="90" y="20" text-anchor="middle">Euler equations</text>
+            <line x1="90" y1="27" x2="90" y2="50" class="arrow" />
+            <rect x="25" y="50" width="130" height="22" class="node-fill" />
+            <rect x="25" y="50" width="130" height="22" /><text x="90" y="65" text-anchor="middle">Lax-Friedrichs
+              split</text>
+            <line x1="55" y1="72" x2="40" y2="95" class="arrow" />
+            <line x1="125" y1="72" x2="140" y2="95" class="arrow" />
+            <rect x="5" y="95" width="70" height="22" class="node-fill" />
+            <rect x="5" y="95" width="70" height="22" /><text x="40" y="110" text-anchor="middle">f⁺</text>
+            <rect x="105" y="95" width="70" height="22" class="node-fill" />
+            <rect x="105" y="95" width="70" height="22" /><text x="140" y="110" text-anchor="middle">f⁻</text>
+            <line x1="40" y1="117" x2="90" y2="140" class="arrow" />
+            <line x1="140" y1="117" x2="90" y2="140" class="arrow" />
+            <rect x="20" y="140" width="140" height="22" class="node-fill" />
+            <rect x="20" y="140" width="140" height="22" /><text x="90" y="155" text-anchor="middle">WENO5-JS/Z</text>
+            <line x1="90" y1="162" x2="90" y2="185" class="arrow" />
+            <rect x="25" y="185" width="130" height="22" class="node-fill" />
+            <rect x="25" y="185" width="130" height="22" /><text x="90" y="200" text-anchor="middle">fused
+              RawKernel</text>
+            <line x1="90" y1="207" x2="90" y2="230" class="arrow" />
+            <rect x="35" y="230" width="110" height="22" class="node-fill" />
+            <rect x="35" y="230" width="110" height="22" /><text x="90" y="245" text-anchor="middle">RK3/RK4 step</text>
+            <line x1="90" y1="252" x2="90" y2="268" class="arrow" />
+            <circle cx="90" cy="273" r="4" />
+          </svg></div>
+      </div>
+    </section>
+    <section id="log" data-commit>
+      <div class="fade-in">
+        <div class="commit-header">
+          <div class="commit-line"><span class="hash">b72c9a0</span><span class="btag">main</span> <span class="msg"> --
+              git log --oneline --graph</span></div>
+        </div>
+        <div class="git-log">
+          <div class="log-entry">
+            <div class="log-hash">a3f7c2d HEAD -&gt; future</div>
+            <div class="log-date">TBD</div>
+            <div class="log-msg">feat: postdoc somewhere</div>
+            <div class="log-body">Accepting offers from anywhere with good coffee and fast GPUs.</div>
+          </div>
+          <div class="log-entry">
+            <div class="log-hash">e91b04a HEAD -&gt; main</div>
+            <div class="log-date">2023 -- present</div>
+            <div class="log-msg">feat: PhD Physics @ Clemson University</div>
+            <div class="log-body">Computational hydrodynamics + binary black hole systems.</div>
+          </div>
+          <div class="log-entry">
+            <div class="log-hash">4d8f1e3</div>
+            <div class="log-date">University of Mumbai</div>
+            <div class="log-msg">feat: MSc Physics</div>
+            <div class="log-body">Began work on quasars and CNNs for radio morphology classification.</div>
+          </div>
+          <div class="log-entry">
+            <div class="log-hash">b72c9a0</div>
+            <div class="log-date">Ramnarain Ruia College, Mumbai</div>
+            <div class="log-msg">init: BSc Physics</div>
+            <div class="log-body">Began computational physics research.</div>
+          </div>
+        </div>
+        <div class="egg"><svg width="160" height="260" viewBox="0 0 160 260">
+            <rect x="30" y="5" width="100" height="22" class="node-fill" />
+            <rect x="30" y="5" width="100" height="22" /><text x="80" y="20" text-anchor="middle">binary BBH</text>
+            <line x1="80" y1="27" x2="80" y2="48" class="arrow" />
+            <rect x="20" y="48" width="120" height="22" class="node-fill" />
+            <rect x="20" y="48" width="120" height="22" /><text x="80" y="63" text-anchor="middle">inspiral</text>
+            <line x1="80" y1="70" x2="80" y2="91" class="arrow" />
+            <rect x="10" y="91" width="140" height="22" class="node-fill" />
+            <rect x="10" y="91" width="140" height="22" /><text x="80" y="106" text-anchor="middle">circumbinary
+              disk</text>
+            <line x1="80" y1="113" x2="80" y2="134" class="arrow" />
+            <rect x="25" y="134" width="110" height="22" class="node-fill" />
+            <rect x="25" y="134" width="110" height="22" /><text x="80" y="149" text-anchor="middle">decoupling</text>
+            <line x1="80" y1="156" x2="80" y2="177" class="arrow" />
+            <rect x="35" y="177" width="90" height="22" class="node-fill" />
+            <rect x="35" y="177" width="90" height="22" /><text x="80" y="192" text-anchor="middle">merger</text>
+            <line x1="80" y1="199" x2="80" y2="220" class="arrow" />
+            <rect x="30" y="220" width="100" height="22" class="node-fill" />
+            <rect x="30" y="220" width="100" height="22" /><text x="80" y="235" text-anchor="middle">ringdown +
+              GW</text>
+            <line x1="80" y1="242" x2="80" y2="253" class="arrow" />
+            <circle cx="80" cy="257" r="4" />
+          </svg></div>
+      </div>
+    </section>
+    <section class="contact-section" id="contact" data-commit>
+      <div class="fade-in">
+        <div class="commit-header">
+          <div class="commit-line"><span class="hash">f0a1d9c</span><span class="btag">main</span> <span class="msg"> --
+              add contact</span></div>
+        </div>
+        <div class="term-links">
+          <div><span class="p">$</span> <a href="mailto:akhiln@clemson.edu">open mailto:akhiln@clemson.edu</a></div>
+          <div><span class="p">$</span> <a href="https://github.com/nairakhils" target="_blank">ssh
+              github.com/nairakhils</a></div>
+          <div><span class="p">$</span> <a href="https://arxiv.org/search/astro-ph?searchtype=author&query=Nair,+A"
+              target="_blank">curl arxiv.org/a/nair</a></div>
+          <div><span class="p">$</span> <a href="https://www.linkedin.com/in/akhilnair16" target="_blank">ping
+              linkedin.com/in/akhilnair16</a></div>
+        </div>
+        <div class="egg"><svg width="160" height="180" viewBox="0 0 160 180">
+            <rect x="10" y="10" width="50" height="22" class="node-fill" />
+            <rect x="10" y="10" width="50" height="22" /><text x="35" y="25" text-anchor="middle">you</text>
+            <rect x="100" y="10" width="50" height="22" class="node-fill" />
+            <rect x="100" y="10" width="50" height="22" /><text x="125" y="25" text-anchor="middle">akhil</text>
+            <line x1="35" y1="32" x2="35" y2="170" style="stroke:rgba(255,255,255,0.04)" />
+            <line x1="125" y1="32" x2="125" y2="170" style="stroke:rgba(255,255,255,0.04)" />
+            <line x1="38" y1="50" x2="122" y2="65" class="arrow" />
+            <text x="80" y="53" text-anchor="middle" font-size="7">sbatch email.sh</text>
+            <line x1="122" y1="85" x2="38" y2="100" class="arrow" />
+            <text x="80" y="88" text-anchor="middle" font-size="7">RUNNING &lt;48h</text>
+            <line x1="38" y1="120" x2="122" y2="135" class="arrow" />
+            <text x="80" y="123" text-anchor="middle" font-size="7">collab.out</text>
+            <rect x="30" y="152" width="100" height="20" class="node-fill" />
+            <rect x="30" y="152" width="100" height="20" /><text x="80" y="166" text-anchor="middle"
+              font-size="8">COMPLETED</text>
+          </svg></div>
+        <div class="footer-end">mass to momentum to merger</div>
+      </div>
+    </section>
+  </div>
+  <script>
+    var DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var panelMap = { about: document.getElementById('panel-about'), research: document.getElementById('panel-research'), gpu: document.getElementById('panel-gpu'), log: document.getElementById('panel-log'), contact: document.getElementById('panel-contact') };
+    var activePanel = null, ghFetched = false, animatedBars = false;
+    function updatePanel() { var vh = window.innerHeight, sections = ['about', 'research', 'gpu', 'log', 'contact'], current = null; for (var i = 0; i < sections.length; i++) { var el = document.getElementById(sections[i]); if (!el) continue; var r = el.getBoundingClientRect(); if (r.top < vh * 0.6 && r.bottom > vh * 0.3) { current = sections[i]; break } } var heroBot = document.getElementById('top').getBoundingClientRect().bottom; if (heroBot > vh * 0.4) current = null; if (current === activePanel) return; activePanel = current; for (var key in panelMap) panelMap[key].classList.remove('active'); if (current && panelMap[current]) { panelMap[current].classList.add('active'); if (current === 'research' && !ghFetched) { fetchGitHub(); ghFetched = true } if (current === 'log' && !animatedBars) { animateSkillBars(); animatedBars = true } } }
+
+    var termBody = document.getElementById('term-body'), termInput = document.getElementById('term-input');
+    var termFS = { 'about.md': 'Role: PhD Student, Computational Astrophysics Lab\nFocus: Binary Black Hole Systems\nMethods: Hydrodynamics, Semi-analytical, Theoretical\nStack: C++, CUDA, JAX/Python, JS', 'skills.txt': 'Python ████████████████████░░ 92%\nC++    █████████████████░░░░ 85%\nCUDA   █████████████████░░░░ 85%\nJulia  ████████████░░░░░░░░ 60%\nMPI    ███████████████░░░░░ 78%', 'research.bib': '@article{2022MNRAS,\n  title={Fraction of BAL quasars in\\n         different radio morphologies},\n  author={Nair, A. and Vivek, M.},\n  journal={MNRAS},\n  volume={511},\\n  year={2022}\n}', 'welcome.txt': 'type a command below. try: help', '.gitconfig': '[user]\n  name = Akhil Nair\n  email = akhiln@clemson.edu\n[core]\n  editor = vim' };
+    var termCmds = { help: function () { return 'available commands:\n  ls          list files\n  cat <file>  read a file\n  whoami      who am i\n  uptime      system uptime\n  neofetch    system info\n  clear       clear terminal' }, ls: function () { return Object.keys(termFS).join('  ') }, cat: function (a) { if (!a[0]) return 'usage: cat <filename>'; return termFS[a[0]] || 'cat: ' + a[0] + ': No such file' }, whoami: function () { return 'akhil@clemson-cal' }, uptime: function () { return ' up 7 years, load avg: 0.85 0.92 0.78' }, neofetch: function () { return '  OS:     ResearchOS 7.3 LTS\n  Host:   Palmetto HPC Cluster\n  GPU:    NVIDIA A100 / Apple M-series\n  Memory: as much as SLURM allows\n  Shell:  zsh 5.9\n  Theme:  dark [always]' }, clear: function () { termBody.innerHTML = ''; return null }, pwd: function () { return '/home/akhil/portfolio' }, date: function () { return new Date().toUTCString() }, echo: function (a) { return a.join(' ') } };
+    termInput.addEventListener('keydown', function (e) { if (e.key !== 'Enter') return; var val = termInput.value.trim(); termInput.value = ''; if (!val) return; var cl = document.createElement('div'); cl.className = 'line'; cl.innerHTML = '<span class="prompt">$</span> <span class="cmd">' + val.replace(/</g, '&lt;') + '</span>'; termBody.appendChild(cl); var parts = val.split(/\s+/), cmd = parts[0].toLowerCase(), args = parts.slice(1), output = termCmds[cmd] ? termCmds[cmd](args) : cmd + ': command not found. try: help'; if (output !== null) { var ol = document.createElement('div'); ol.className = 'line'; ol.innerHTML = '<span class="out">' + output.replace(/</g, '&lt;').replace(/\n/g, '<br>') + '</span>'; termBody.appendChild(ol) } termBody.scrollTop = termBody.scrollHeight });
+
+    function animateNum(el, target) { var startTime = null; function step(ts) { if (!startTime) startTime = ts; var p = Math.min(1, (ts - startTime) / 1200), ease = 1 - Math.pow(1 - p, 3); el.textContent = Math.floor(target * ease); if (p < 1) requestAnimationFrame(step) } requestAnimationFrame(step) }
+
+    function drawContribGraph(data) {
+      var cvs = document.getElementById('gh-graph');
+      cvs._data = data;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var rect = cvs.getBoundingClientRect();
+      cvs.width = rect.width * dpr; cvs.height = rect.height * dpr;
+      var ctx = cvs.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var W = rect.width, H = rect.height;
+
+      var weeks = 52, days = 7;
+      var gap = 1.5;
+      var cellW = (W - gap * (weeks - 1)) / weeks;
+      var cellH = (H - gap * (days - 1)) / days;
+      var cell = Math.min(cellW, cellH);
+      var totalW = weeks * (cell + gap) - gap;
+      var totalH = days * (cell + gap) - gap;
+      var ox = (W - totalW) / 2, oy = (H - totalH) / 2;
+
+      // data is array of 365 values (0-based, oldest first)
+      var max = 0; for (var i = 0; i < data.length; i++)if (data[i] > max) max = data[i];
+      if (max === 0) max = 1;
+
+      for (var w = 0; w < weeks; w++) {
+        for (var d = 0; d < days; d++) {
+          var idx = w * 7 + d;
+          var val = idx < data.length ? data[idx] : 0;
+          var intensity = val / max;
+          var alpha = val === 0 ? 0.03 : (0.08 + intensity * 0.55);
+          ctx.fillStyle = 'rgba(255,255,255,' + alpha + ')';
+          ctx.fillRect(ox + w * (cell + gap), oy + d * (cell + gap), cell, cell);
+        }
+      }
+    }
+
+    function fetchGitHub() {
+      var GH = 'nairakhils';
+      // Fetch user stats
+      fetch('https://api.github.com/users/' + GH).then(function (r) { return r.json() }).then(function (u) {
+        animateNum(document.getElementById('gh-repos'), u.public_repos || 0);
+        animateNum(document.getElementById('gh-followers'), u.followers || 0);
+        animateNum(document.getElementById('gh-following'), u.following || 0);
+        return fetch('https://api.github.com/users/' + GH + '/repos?sort=updated&per_page=100');
+      }).then(function (r) { return r.json() }).then(function (repos) {
+        var totalStars = 0; for (var i = 0; i < repos.length; i++)totalStars += repos[i].stargazers_count || 0;
+        animateNum(document.getElementById('gh-stars'), totalStars);
+      }).catch(function () {
+        document.getElementById('gh-repos').textContent = '?';
+        document.getElementById('gh-stars').textContent = '?';
+        document.getElementById('gh-followers').textContent = '?';
+        document.getElementById('gh-following').textContent = '?';
+      });
+
+      // Fetch contribution graph — try full-year contributions API first, fall back to events
+      fetch('https://github-contributions-api.jogruber.de/v4/' + GH + '?y=last').then(function (r) { return r.json() }).then(function (json) {
+        var contributions = json.contributions || [];
+        var data = [], totalCommits = 0;
+        // Build 364 days oldest-first
+        var now = new Date();
+        var lookup = {};
+        for (var i = 0; i < contributions.length; i++) {
+          lookup[contributions[i].date] = contributions[i].count;
+        }
+        for (var d = 363; d >= 0; d--) {
+          var dt = new Date(now);
+          dt.setDate(dt.getDate() - d);
+          var key = dt.toISOString().slice(0, 10);
+          var c = lookup[key] || 0;
+          data.push(c);
+          totalCommits += c;
+        }
+        drawContribGraph(data);
+        var el = document.getElementById('gh-total-commits');
+        if (el) el.textContent = totalCommits + ' contributions';
+      }).catch(function () {
+        // Fallback: events API (last ~90 days)
+        fetch('https://api.github.com/users/' + GH + '/events/public?per_page=100').then(function (r) { return r.json() }).then(function (events) {
+          var counts = {}, totalCommits = 0;
+          for (var i = 0; i < events.length; i++) {
+            var e = events[i], day = e.created_at.slice(0, 10);
+            if (!counts[day]) counts[day] = 0;
+            if (e.type === 'PushEvent') {
+              var n = e.payload && e.payload.commits ? e.payload.commits.length : 1;
+              counts[day] += n; totalCommits += n;
+            } else { counts[day] += 1; totalCommits += 1; }
+          }
+          var data = [], now = new Date();
+          for (var d = 363; d >= 0; d--) {
+            var dt = new Date(now); dt.setDate(dt.getDate() - d);
+            data.push(counts[dt.toISOString().slice(0, 10)] || 0);
+          }
+          drawContribGraph(data);
+          var el = document.getElementById('gh-total-commits');
+          if (el) el.textContent = totalCommits + ' contributions';
+        }).catch(function () {
+          var data = []; for (var i = 0; i < 364; i++) data.push(0);
+          drawContribGraph(data);
+        });
+      });
+
+      // Redraw on resize
+      window.addEventListener('resize', function () {
+        if (activePanel === 'research') {
+          var cvs = document.getElementById('gh-graph');
+          if (cvs && cvs._data) drawContribGraph(cvs._data);
+        }
+      });
+    }
+    function animateSkillBars() { var bars = document.querySelectorAll('.metric-bar-fill'); for (var i = 0; i < bars.length; i++)bars[i].style.width = bars[i].getAttribute('data-width') + '%' }
+
+    var gitCvs = document.getElementById('git-canvas'), gC = gitCvs.getContext('2d'), gTime = 0;
+    function getRL() { return window.innerWidth >= 768 ? 80 : 48 }
+    function resizeGit() { var w = window.innerWidth, h = document.documentElement.scrollHeight; gitCvs.width = w * DPR; gitCvs.height = h * DPR; gitCvs.style.width = w + 'px'; gitCvs.style.height = h + 'px'; gC.setTransform(DPR, 0, 0, DPR, 0, 0) }
+    function getNodes() { var n = [], els = document.querySelectorAll('[data-commit]'); for (var i = 0; i < els.length; i++) { var r = els[i].getBoundingClientRect(), t = r.top + window.scrollY; n.push({ y: t + 80, sT: t, sB: t + r.height }) } return n }
+    function drawGit() { var W = window.innerWidth, H = document.documentElement.scrollHeight; gC.clearRect(0, 0, W, H); var rx = getRL(), nodes = getNodes(); if (!nodes.length) return; var rY = window.scrollY + window.innerHeight * 0.6, rT = nodes[0].y, rB = Math.min(rY, nodes[nodes.length - 1].y + 40); if (rB > rT) { gC.beginPath(); gC.moveTo(rx, rT); gC.lineTo(rx, rB); gC.strokeStyle = 'rgba(255,255,255,0.08)'; gC.lineWidth = 1; gC.stroke() } var bo = 28; for (var i = 0; i < nodes.length; i++) { var nd = nodes[i]; if (nd.y > rY + 60) continue; var ny = nd.y, af = Math.min(1, Math.max(0, (rY - ny + 60) / 120)); gC.beginPath(); gC.arc(rx, ny, 3.5, 0, Math.PI * 2); gC.fillStyle = 'rgba(255,255,255,' + (0.7 * af) + ')'; gC.fill(); gC.beginPath(); gC.arc(rx, ny, 6, 0, Math.PI * 2); gC.strokeStyle = 'rgba(255,255,255,' + (0.12 * af) + ')'; gC.lineWidth = 0.5; gC.stroke(); if (i > 0) { var bL = nd.sB - nd.sT - 100; if (bL > 0) { var bS = ny, bE = ny + bL * 0.7, bx = rx + bo, dE = Math.min(bE, rY); if (dE > bS) { gC.beginPath(); gC.moveTo(rx, bS); gC.bezierCurveTo(rx, bS + 20, bx, bS + 10, bx, bS + 30); gC.lineTo(bx, Math.min(dE - 30, bE - 30)); gC.strokeStyle = 'rgba(255,255,255,' + (0.06 * af) + ')'; gC.lineWidth = 0.7; gC.stroke(); if (rY > bE) { gC.beginPath(); gC.moveTo(bx, bE - 30); gC.bezierCurveTo(bx, bE - 10, rx, bE - 20, rx, bE); gC.strokeStyle = 'rgba(255,255,255,' + (0.06 * af) + ')'; gC.lineWidth = 0.7; gC.stroke(); gC.beginPath(); gC.arc(rx, bE, 2, 0, Math.PI * 2); gC.fillStyle = 'rgba(255,255,255,' + (0.3 * af) + ')'; gC.fill() } for (var d = 0; d < 3; d++) { var f = (d + 1) / 4, dy2 = bS + 30 + f * (Math.min(dE - 30, bE - 30) - bS - 30); if (dy2 > rY) continue; var pp = Math.sin(gTime * 2 + d * 1.5 + i) * 0.5 + 0.5; gC.beginPath(); gC.arc(bx, dy2, 1.5, 0, Math.PI * 2); gC.fillStyle = 'rgba(255,255,255,' + ((0.1 + pp * 0.15) * af) + ')'; gC.fill() } } } } if (i === 2 || i === 3) { var b2L = (nd.sB - nd.sT) * 0.5, b2S = ny + 40, b2E = b2S + b2L, b2x = rx + bo * 2, d2E = Math.min(b2E, rY); if (d2E > b2S) { gC.beginPath(); gC.moveTo(rx + bo, b2S); gC.bezierCurveTo(rx + bo, b2S + 15, b2x, b2S + 8, b2x, b2S + 25); gC.lineTo(b2x, Math.min(d2E - 20, b2E - 20)); gC.strokeStyle = 'rgba(255,255,255,' + (0.04 * af) + ')'; gC.lineWidth = 0.5; gC.stroke(); if (rY > b2E) { gC.beginPath(); gC.moveTo(b2x, b2E - 20); gC.bezierCurveTo(b2x, b2E - 5, rx + bo, b2E - 10, rx + bo, b2E); gC.strokeStyle = 'rgba(255,255,255,' + (0.04 * af) + ')'; gC.lineWidth = 0.5; gC.stroke() } } } } var hY = Math.min(rY, nodes[nodes.length - 1].y + 40); if (hY >= rT) { var p2 = Math.sin(gTime * 3) * 0.3 + 0.7; gC.beginPath(); gC.arc(rx, hY, 2.5, 0, Math.PI * 2); gC.fillStyle = 'rgba(255,255,255,' + p2 + ')'; gC.fill(); var gr = gC.createRadialGradient(rx, hY, 0, rx, hY, 12); gr.addColorStop(0, 'rgba(255,255,255,' + (0.1 * p2) + ')'); gr.addColorStop(1, 'rgba(255,255,255,0)'); gC.beginPath(); gC.arc(rx, hY, 12, 0, Math.PI * 2); gC.fillStyle = gr; gC.fill() } gTime += 0.016 }
+
+    var gpuCvs = document.getElementById('gpu-canvas'), gpC = gpuCvs.getContext('2d'), gpT = 0;
+    function resizeGPU() { var r = gpuCvs.getBoundingClientRect(); gpuCvs.width = r.width * DPR; gpuCvs.height = r.height * DPR; gpC.setTransform(DPR, 0, 0, DPR, 0, 0) }
+    function drawGPU() { var W = gpuCvs.width / DPR, H = gpuCvs.height / DPR; gpC.clearRect(0, 0, W, H); var r = document.getElementById('gpu').getBoundingClientRect(); if (r.bottom < -200 || r.top > window.innerHeight + 200) return; var p = 16, co = 16, ro = 4, sg = 2, bH = 14, cH = 8, rW = 14, lH = 18, tP = p + lH, aW = W - p * 2 - rW - 8, aH = H - p * 2 - lH - bH - cH - 24, sW = (aW - (co - 1) * sg) / co, sH = (aH - (ro - 1) * sg) / ro, sX = p + rW + 8, sY = tP; gpC.strokeStyle = 'rgba(255,255,255,0.08)'; gpC.lineWidth = 0.5; gpC.strokeRect(p, p, W - p * 2, H - p * 2); gpC.font = '8px JetBrains Mono,monospace'; gpC.fillStyle = 'rgba(255,255,255,0.15)'; gpC.fillText('GPU_DIE', p + 5, p + 12); for (var rv = 0; rv < ro; rv++)for (var cv = 0; cv < co; cv++) { var sx = sX + cv * (sW + sg), sy = sY + rv * (sH + sg), w = Math.sin(gpT * 2.2 + cv * 0.45 + rv * 0.9), it = w > -0.15 ? (w + 0.15) / 1.15 : 0; gpC.fillStyle = 'rgba(255,255,255,' + (0.03 + it * 0.22) + ')'; gpC.fillRect(sx, sy, sW, sH); gpC.strokeStyle = 'rgba(255,255,255,' + (0.06 + it * 0.16) + ')'; gpC.lineWidth = 0.4; gpC.strokeRect(sx, sy, sW, sH) } gpC.font = '6px JetBrains Mono,monospace'; gpC.fillStyle = 'rgba(255,255,255,0.1)'; gpC.fillText('SM_0', sX, sY - 3); for (var r2 = 0; r2 < ro; r2++) { var ry = sY + r2 * (sH + sg), rp = Math.sin(gpT * 2.5 + r2 * 1.5); gpC.fillStyle = 'rgba(255,255,255,' + (0.03 + Math.max(0, rp) * 0.1) + ')'; gpC.fillRect(p + 4, ry, rW, sH); gpC.strokeStyle = 'rgba(255,255,255,0.05)'; gpC.lineWidth = 0.4; gpC.strokeRect(p + 4, ry, rW, sH) } gpC.save(); gpC.translate(p + 10, sY + aH / 2 + 12); gpC.rotate(-Math.PI / 2); gpC.font = '6px JetBrains Mono,monospace'; gpC.fillStyle = 'rgba(255,255,255,0.08)'; gpC.fillText('REG_FILE', 0, 0); gpC.restore(); var cY = sY + ro * (sH + sg) + 6, bW = co * (sW + sg) - sg; gpC.fillStyle = 'rgba(255,255,255,0.02)'; gpC.fillRect(sX, cY, bW, cH); gpC.strokeStyle = 'rgba(255,255,255,0.05)'; gpC.strokeRect(sX, cY, bW, cH); gpC.font = '5.5px JetBrains Mono,monospace'; gpC.fillStyle = 'rgba(255,255,255,0.1)'; gpC.fillText('L2_CACHE', sX + 3, cY + cH - 2); for (var c2 = 0; c2 < co; c2 += 2) { var ddx = sX + c2 * (sW + sg) + sW / 2; gpC.beginPath(); gpC.setLineDash([2, 5]); gpC.lineDashOffset = -gpT * 18; gpC.moveTo(ddx, sY + ro * (sH + sg)); gpC.lineTo(ddx, cY); gpC.strokeStyle = 'rgba(255,255,255,0.04)'; gpC.lineWidth = 0.4; gpC.stroke(); gpC.setLineDash([]) } var mY = cY + cH + 4; gpC.strokeStyle = 'rgba(255,255,255,0.07)'; gpC.lineWidth = 0.5; gpC.strokeRect(sX, mY, bW, bH); gpC.font = '6px JetBrains Mono,monospace'; gpC.fillStyle = 'rgba(255,255,255,0.12)'; gpC.fillText('GLOBAL_MEMORY', sX + 3, mY + 10); for (var pk = 0; pk < 10; pk++) { var ph = (gpT * 35 + pk * (bW / 10)) % bW; gpC.fillStyle = 'rgba(255,255,255,' + (0.1 + 0.12 * Math.sin(gpT * 3 + pk)) + ')'; gpC.fillRect(sX + ph, mY + 2, 6, bH - 4) } gpT += 0.016 }
+
+    var obs = new IntersectionObserver(function (e) { for (var i = 0; i < e.length; i++)if (e[i].isIntersecting) e[i].target.classList.add('visible') }, { threshold: 0.1 });
+    var fEls = document.querySelectorAll('.fade-in'); for (var fi = 0; fi < fEls.length; fi++)obs.observe(fEls[fi]);
+    var mbars = document.querySelectorAll('.metric-bar-fill'); for (var bi = 0; bi < mbars.length; bi++)mbars[bi].style.width = '0%';
+    var tick = false;
+    function onScroll() { if (!tick) { requestAnimationFrame(function () { drawGit(); updatePanel(); tick = false }); tick = true } }
+
+    function init() { resizeGit(); resizeGPU(); drawGit(); updatePanel(); aLoop() }
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    init();
+  </script>
+</body>
+
+</html>
