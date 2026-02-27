@@ -752,181 +752,10 @@
       transition: width 1s ease
     }
 
-    .status-panel {
-      font-family: var(--mono)
-    }
 
-    .status-header {
-      font-size: clamp(.6rem, 0.65vw, .72rem);
-      color: #444;
-      letter-spacing: .15em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem
-    }
-
-    .status-item {
-      display: flex;
-      align-items: center;
-      gap: .8rem;
-      padding: clamp(.5rem, 0.6vw, .7rem) 0;
-      border-bottom: 1px solid var(--faint)
-    }
-
-    .status-item:first-of-type {
-      border-top: 1px solid var(--faint)
-    }
-
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      flex-shrink: 0
-    }
-
-    .status-dot.on {
-      background: #4a4a4a;
-      box-shadow: 0 0 6px rgba(255, 255, 255, 0.1)
-    }
-
-    .status-dot.off {
-      background: #222
-    }
-
-    .status-text {
-      font-size: clamp(.7rem, 0.78vw, .85rem);
-      color: var(--dim)
-    }
-
-    .status-text a {
-      color: #888;
-      text-decoration: none;
-      border-bottom: 1px solid #222;
-      transition: all .3s
-    }
-
-    .status-text a:hover {
-      color: var(--fg);
-      border-color: #444
-    }
-
-    .status-response {
-      margin-top: 1.5rem;
-      font-size: clamp(.65rem, 0.72vw, .78rem);
-      color: #333;
-      line-height: 1.6
-    }
-
-    /* Easter Eggs — mermaid-style diagrams in the gap */
-    .egg {
-      position: absolute;
-      left: 95%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 1.2s ease .4s
-    }
-
-    .egg svg {
-      display: block;
-      transition: opacity .4s ease
-    }
-
-    .egg text {
-      font-family: var(--mono);
-      fill: rgba(255, 255, 255, 0.10);
-      font-size: 9px;
-      transition: fill .4s ease
-    }
-
-    .egg line,
-    .egg polyline,
-    .egg path {
-      stroke: rgba(255, 255, 255, 0.08);
-      fill: none;
-      stroke-width: 0.8;
-      transition: stroke .4s ease
-    }
-
-    .egg rect {
-      stroke: rgba(255, 255, 255, 0.10);
-      fill: none;
-      stroke-width: 0.7;
-      rx: 2;
-      transition: stroke .4s ease, fill .4s ease
-    }
-
-    .egg circle {
-      stroke: rgba(255, 255, 255, 0.10);
-      fill: none;
-      stroke-width: 0.7;
-      transition: stroke .4s ease
-    }
-
-    .egg .node-fill {
-      fill: rgba(255, 255, 255, 0.01);
-      transition: fill .4s ease
-    }
-
-    .egg .diamond {
-      stroke: rgba(255, 255, 255, 0.10);
-      fill: rgba(255, 255, 255, 0.01);
-      stroke-width: 0.7;
-      transition: stroke .4s ease, fill .4s ease
-    }
-
-    .egg .arrow {
-      marker-end: url(#arrowhead)
-    }
-
-    .fade-in.visible .egg {
-      opacity: 1;
-      pointer-events: auto
-    }
-
-    .egg:hover text {
-      fill: rgba(255, 255, 255, 0.65)
-    }
-
-    .egg:hover line,
-    .egg:hover polyline,
-    .egg:hover path {
-      stroke: rgba(255, 255, 255, 0.5)
-    }
-
-    .egg:hover rect {
-      stroke: rgba(255, 255, 255, 0.55)
-    }
-
-    .egg:hover circle {
-      stroke: rgba(255, 255, 255, 0.55)
-    }
-
-    .egg:hover .node-fill {
-      fill: rgba(255, 255, 255, 0.08)
-    }
-
-    .egg:hover .diamond {
-      stroke: rgba(255, 255, 255, 0.55);
-      fill: rgba(255, 255, 255, 0.06)
-    }
-
-    .fade-in.visible .egg {
-      opacity: 1
-    }
-
-    @media(max-width:1200px) {
-      .egg {
-        display: none
-      }
-    }
 
     @media(max-width:900px) {
       .side-panel {
-        display: none
-      }
-
-      .egg {
         display: none
       }
 
@@ -973,13 +802,6 @@
 
 <body>
   <canvas id="git-canvas"></canvas>
-  <svg style="position:absolute;width:0;height:0">
-    <defs>
-      <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
-        <path d="M0,0 L6,2 L0,4" fill="rgba(255,255,255,0.18)" />
-      </marker>
-    </defs>
-  </svg>
   <div class="side-panel">
     <div class="panel" id="panel-about">
       <div class="term-box">
@@ -1107,28 +929,6 @@
         </div>
       </div>
     </div>
-    <div class="panel" id="panel-contact">
-      <div class="status-panel">
-        <div class="status-header">availability</div>
-        <div class="status-item">
-          <div class="status-dot on"></div>
-          <div class="status-text"><a href="mailto:akhiln@clemson.edu"></a></div>
-        </div>
-        <div class="status-item">
-          <div class="status-dot on"></div>
-          <div class="status-text">Accepting <a href="mailto:akhiln@clemson.edu">seminar invitations</a></div>
-        </div>
-        <div class="status-item">
-          <div class="status-dot on"></div>
-          <div class="status-text"> <a href="mailto:akhiln@clemson.edu"></a></div>
-        </div>
-        <div class="status-item">
-          <div class="status-dot off"></div>
-          <div class="status-text"></div>
-        </div>
-        <div class="status-response">typical response time: <span style="color:#666">&lt;</span></div>
-      </div>
-    </div>
   </div>
   <div class="content">
     <section class="hero-section" id="top" data-commit>
@@ -1173,26 +973,6 @@
           <div class="av"><a href="https://akhiln.myportfolio.com/" target="_blank"
               style="color:#666;text-decoration:none;border-bottom:1px solid #333">art & photography</a></div>
         </div>
-        <div class="egg"><svg width="180" height="270" viewBox="0 0 180 270">
-            <rect x="50" y="5" width="80" height="22" class="node-fill" />
-            <rect x="50" y="5" width="80" height="22" /><text x="90" y="20" text-anchor="middle">init</text>
-            <line x1="90" y1="27" x2="90" y2="50" class="arrow" />
-            <rect x="30" y="50" width="120" height="22" class="node-fill" />
-            <rect x="30" y="50" width="120" height="22" /><text x="90" y="65" text-anchor="middle">BSc Ruia</text>
-            <line x1="90" y1="72" x2="90" y2="97" class="arrow" />
-            <polygon points="90,97 132,118 90,139 48,118" class="diamond" /><text x="90" y="122"
-              text-anchor="middle">research?</text>
-            <line x1="132" y1="118" x2="160" y2="118" /><text x="164" y="122" font-size="7">industry</text>
-            <line x1="90" y1="139" x2="90" y2="162" class="arrow" /><text x="76" y="154" font-size="7">yes</text>
-            <rect x="25" y="162" width="130" height="22" class="node-fill" />
-            <rect x="25" y="162" width="130" height="22" /><text x="90" y="177" text-anchor="middle">MSc Mumbai</text>
-            <line x1="90" y1="184" x2="90" y2="207" class="arrow" />
-            <rect x="20" y="207" width="140" height="22" class="node-fill" />
-            <rect x="20" y="207" width="140" height="22" /><text x="90" y="222" text-anchor="middle">PhD Clemson
-              [HEAD]</text>
-            <line x1="90" y1="229" x2="90" y2="252" class="arrow" />
-            <circle cx="90" cy="258" r="5" />
-          </svg></div>
       </div>
     </section>
     <section id="research" data-commit>
@@ -1228,30 +1008,6 @@
             <div class="paper-authors">placeholder for future publication</div>
           </a>
         </div>
-        <div class="egg"><svg width="200" height="240" viewBox="0 0 200 240">
-            <rect x="45" y="5" width="110" height="22" class="node-fill" />
-            <rect x="45" y="5" width="110" height="22" /><text x="100" y="20" text-anchor="middle">SDSS + FIRST</text>
-            <line x1="100" y1="27" x2="100" y2="48" class="arrow" />
-            <rect x="30" y="48" width="140" height="22" class="node-fill" />
-            <rect x="30" y="48" width="140" height="22" /><text x="100" y="63" text-anchor="middle">radio cutouts</text>
-            <line x1="100" y1="70" x2="100" y2="91" class="arrow" />
-            <rect x="50" y="91" width="100" height="22" class="node-fill" />
-            <rect x="50" y="91" width="100" height="22" /><text x="100" y="106" text-anchor="middle">CNN model</text>
-            <line x1="60" y1="113" x2="40" y2="134" class="arrow" />
-            <line x1="140" y1="113" x2="160" y2="134" class="arrow" />
-            <rect x="5" y="134" width="70" height="22" class="node-fill" />
-            <rect x="5" y="134" width="70" height="22" /><text x="40" y="149" text-anchor="middle">core-dom</text>
-            <rect x="125" y="134" width="70" height="22" class="node-fill" />
-            <rect x="125" y="134" width="70" height="22" /><text x="160" y="149" text-anchor="middle">lobe-dom</text>
-            <line x1="40" y1="156" x2="100" y2="177" class="arrow" />
-            <line x1="160" y1="156" x2="100" y2="177" class="arrow" />
-            <rect x="30" y="177" width="140" height="22" class="node-fill" />
-            <rect x="30" y="177" width="140" height="22" /><text x="100" y="192" text-anchor="middle">BAL
-              fraction</text>
-            <line x1="100" y1="199" x2="100" y2="215" class="arrow" />
-            <polygon points="100,215 135,230 65,230" class="diamond" /><text x="100" y="228" text-anchor="middle"
-              font-size="7">orientation?</text>
-          </svg></div>
       </div>
     </section>
     <section id="gpu" data-commit>
@@ -1288,34 +1044,12 @@
             <div class="gp-desc">Interactive gravitational waveform analysis webapp using PyCBC. Live at
               gwpycbc.streamlit.app.</div>
           </a>
+          <a class="gp" href="https://glyphworks.vercel.app/" target="_blank">
+            <div class="gp-tag">JSX / HTML / CSS</div>
+            <div class="gp-name">glyphworks</div>
+            <div class="gp-desc">Scientific visualization experiments. Live at glyphworks.vercel.app.</div>
+          </a>
         </div>
-        <div class="egg"><svg width="180" height="280" viewBox="0 0 180 280">
-            <rect x="30" y="5" width="120" height="22" class="node-fill" />
-            <rect x="30" y="5" width="120" height="22" /><text x="90" y="20" text-anchor="middle">Euler equations</text>
-            <line x1="90" y1="27" x2="90" y2="50" class="arrow" />
-            <rect x="25" y="50" width="130" height="22" class="node-fill" />
-            <rect x="25" y="50" width="130" height="22" /><text x="90" y="65" text-anchor="middle">Lax-Friedrichs
-              split</text>
-            <line x1="55" y1="72" x2="40" y2="95" class="arrow" />
-            <line x1="125" y1="72" x2="140" y2="95" class="arrow" />
-            <rect x="5" y="95" width="70" height="22" class="node-fill" />
-            <rect x="5" y="95" width="70" height="22" /><text x="40" y="110" text-anchor="middle">f⁺</text>
-            <rect x="105" y="95" width="70" height="22" class="node-fill" />
-            <rect x="105" y="95" width="70" height="22" /><text x="140" y="110" text-anchor="middle">f⁻</text>
-            <line x1="40" y1="117" x2="90" y2="140" class="arrow" />
-            <line x1="140" y1="117" x2="90" y2="140" class="arrow" />
-            <rect x="20" y="140" width="140" height="22" class="node-fill" />
-            <rect x="20" y="140" width="140" height="22" /><text x="90" y="155" text-anchor="middle">WENO5-JS/Z</text>
-            <line x1="90" y1="162" x2="90" y2="185" class="arrow" />
-            <rect x="25" y="185" width="130" height="22" class="node-fill" />
-            <rect x="25" y="185" width="130" height="22" /><text x="90" y="200" text-anchor="middle">fused
-              RawKernel</text>
-            <line x1="90" y1="207" x2="90" y2="230" class="arrow" />
-            <rect x="35" y="230" width="110" height="22" class="node-fill" />
-            <rect x="35" y="230" width="110" height="22" /><text x="90" y="245" text-anchor="middle">RK3/RK4 step</text>
-            <line x1="90" y1="252" x2="90" y2="268" class="arrow" />
-            <circle cx="90" cy="273" r="4" />
-          </svg></div>
       </div>
     </section>
     <section id="log" data-commit>
@@ -1329,7 +1063,7 @@
             <div class="log-hash">a3f7c2d HEAD -&gt; future</div>
             <div class="log-date">TBD</div>
             <div class="log-msg">feat: postdoc somewhere</div>
-            <div class="log-body">Will potentiall accept offers from anywhere with good coffee and fast GPUs.</div>
+            <div class="log-body">Will potentially consider accepting offers from anywhere with good coffee and fast GPUs.</div>
           </div>
           <div class="log-entry">
             <div class="log-hash">e91b04a HEAD -&gt; main</div>
@@ -1350,29 +1084,6 @@
             <div class="log-body">Began computational physics research.</div>
           </div>
         </div>
-        <div class="egg"><svg width="160" height="260" viewBox="0 0 160 260">
-            <rect x="30" y="5" width="100" height="22" class="node-fill" />
-            <rect x="30" y="5" width="100" height="22" /><text x="80" y="20" text-anchor="middle">binary BBH</text>
-            <line x1="80" y1="27" x2="80" y2="48" class="arrow" />
-            <rect x="20" y="48" width="120" height="22" class="node-fill" />
-            <rect x="20" y="48" width="120" height="22" /><text x="80" y="63" text-anchor="middle">inspiral</text>
-            <line x1="80" y1="70" x2="80" y2="91" class="arrow" />
-            <rect x="10" y="91" width="140" height="22" class="node-fill" />
-            <rect x="10" y="91" width="140" height="22" /><text x="80" y="106" text-anchor="middle">circumbinary
-              disk</text>
-            <line x1="80" y1="113" x2="80" y2="134" class="arrow" />
-            <rect x="25" y="134" width="110" height="22" class="node-fill" />
-            <rect x="25" y="134" width="110" height="22" /><text x="80" y="149" text-anchor="middle">decoupling</text>
-            <line x1="80" y1="156" x2="80" y2="177" class="arrow" />
-            <rect x="35" y="177" width="90" height="22" class="node-fill" />
-            <rect x="35" y="177" width="90" height="22" /><text x="80" y="192" text-anchor="middle">merger</text>
-            <line x1="80" y1="199" x2="80" y2="220" class="arrow" />
-            <rect x="30" y="220" width="100" height="22" class="node-fill" />
-            <rect x="30" y="220" width="100" height="22" /><text x="80" y="235" text-anchor="middle">ringdown +
-              GW</text>
-            <line x1="80" y1="242" x2="80" y2="253" class="arrow" />
-            <circle cx="80" cy="257" r="4" />
-          </svg></div>
       </div>
     </section>
     <section class="contact-section" id="contact" data-commit>
@@ -1390,30 +1101,13 @@
           <div><span class="p">$</span> <a href="https://www.linkedin.com/in/akhilnair16" target="_blank">ping
               linkedin.com/in/akhilnair16</a></div>
         </div>
-        <div class="egg"><svg width="160" height="180" viewBox="0 0 160 180">
-            <rect x="10" y="10" width="50" height="22" class="node-fill" />
-            <rect x="10" y="10" width="50" height="22" /><text x="35" y="25" text-anchor="middle">you</text>
-            <rect x="100" y="10" width="50" height="22" class="node-fill" />
-            <rect x="100" y="10" width="50" height="22" /><text x="125" y="25" text-anchor="middle">akhil</text>
-            <line x1="35" y1="32" x2="35" y2="170" style="stroke:rgba(255,255,255,0.04)" />
-            <line x1="125" y1="32" x2="125" y2="170" style="stroke:rgba(255,255,255,0.04)" />
-            <line x1="38" y1="50" x2="122" y2="65" class="arrow" />
-            <text x="80" y="53" text-anchor="middle" font-size="7">sbatch email.sh</text>
-            <line x1="122" y1="85" x2="38" y2="100" class="arrow" />
-            <text x="80" y="88" text-anchor="middle" font-size="7">RUNNING &lt;48h</text>
-            <line x1="38" y1="120" x2="122" y2="135" class="arrow" />
-            <text x="80" y="123" text-anchor="middle" font-size="7">collab.out</text>
-            <rect x="30" y="152" width="100" height="20" class="node-fill" />
-            <rect x="30" y="152" width="100" height="20" /><text x="80" y="166" text-anchor="middle"
-              font-size="8">COMPLETED</text>
-          </svg></div>
         <div class="footer-end">mass to momentum to merger</div>
       </div>
     </section>
   </div>
   <script>
     var DPR = Math.min(window.devicePixelRatio || 1, 2);
-    var panelMap = { about: document.getElementById('panel-about'), research: document.getElementById('panel-research'), gpu: document.getElementById('panel-gpu'), log: document.getElementById('panel-log'), contact: document.getElementById('panel-contact') };
+    var panelMap = { about: document.getElementById('panel-about'), research: document.getElementById('panel-research'), gpu: document.getElementById('panel-gpu'), log: document.getElementById('panel-log') };
     var activePanel = null, ghFetched = false, animatedBars = false;
     function updatePanel() { var vh = window.innerHeight, sections = ['about', 'research', 'gpu', 'log', 'contact'], current = null; for (var i = 0; i < sections.length; i++) { var el = document.getElementById(sections[i]); if (!el) continue; var r = el.getBoundingClientRect(); if (r.top < vh * 0.6 && r.bottom > vh * 0.3) { current = sections[i]; break } } var heroBot = document.getElementById('top').getBoundingClientRect().bottom; if (heroBot > vh * 0.4) current = null; if (current === activePanel) return; activePanel = current; for (var key in panelMap) panelMap[key].classList.remove('active'); if (current && panelMap[current]) { panelMap[current].classList.add('active'); if (current === 'research' && !ghFetched) { fetchGitHub(); ghFetched = true } if (current === 'log' && !animatedBars) { animateSkillBars(); animatedBars = true } } }
 
